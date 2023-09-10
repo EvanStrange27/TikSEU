@@ -23,6 +23,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CButton B1;
-	afx_msg void OnBnClickedButton1();
+	//CButton B1;
+	template <int bid> afx_msg void OnBnClickedButton();
+	CButton BTN[100];
 };
