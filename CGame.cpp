@@ -5,7 +5,7 @@
 #include "TikSEU.h"
 #include "afxdialogex.h"
 #include "CGame.h"
-
+#include "game_core.h"
 
 // CGame 对话框
 

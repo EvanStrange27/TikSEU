@@ -10,17 +10,31 @@ class ELM
 {
 private:
 	int Bid;
-	string text;
-	int x;
-	int y;
+	string Text;
+	int X;
+	int Y;
 public:
 	ELM() {
 		Bid = 0;
-		text = "0";
-		x = 0;
-		y = 0;
+		Text = "0";
+		X = 0;
+		Y = 0;
 	}
 	~ELM() {};
-	void SetBid();
-	void SetXY(int intx,int inty);
+	void SetBid(int bid);
+	void SetXY(int x,int y);
+};
+
+class GM
+{
+private:
+	ELM* elm;
+
+public:
+	GM() {
+		elm = NULL;
+	}
+	~GM() {};
+	ELM* CreateELM();
+
 };
