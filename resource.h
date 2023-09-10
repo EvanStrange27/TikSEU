@@ -11,6 +11,8 @@
 #define Game                            132
 #define IDB_BITMAP1                     134
 #define IDB_BITMAP2                     136
+#define IDD_DIALOG2                     137
+#define IDD_NAME                        137
 #define IDC_BUTTON1                     1000
 #define IDC_BUTTON2                     1001
 #define IDC_SCROLLBAR1                  1002
@@ -102,7 +104,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        137
+#define _APS_NEXT_RESOURCE_VALUE        139
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           101

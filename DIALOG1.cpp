@@ -5,6 +5,7 @@
 #include "TikSEU.h"
 #include "afxdialogex.h"
 #include "DIALOG1.h"
+#include "CNAME.h"
 
 
 // DIALOG1 对话框
@@ -28,7 +29,20 @@ void DIALOG1::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(DIALOG1, CDialogEx)
+	ON_BN_CLICKED(IDC_BUTTON1, &DIALOG1::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
 // DIALOG1 消息处理程序
+
+
+void DIALOG1::OnBnClickedButton1()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	INT_PTR nname;
+	CNAME name;
+	nname = name.DoModal();
+	if (IDCANCEL == nname)return;
+	UpdateData(TRUE);
+	UpdateData(FALSE);
+}
