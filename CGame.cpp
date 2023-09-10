@@ -9,7 +9,7 @@
 #include "random"
 #include "string"
 using std::string;
-
+int ELM::count = 0;
 // CGame 对话框
 
 IMPLEMENT_DYNAMIC(CGame, CDialogEx)
@@ -280,6 +280,11 @@ void ELM::SetStatus(int sta) {
 	ELMStatus = sta;
 }
 
+void ELM::UpdateEid() {
+	count++;
+	Eid = count;
+}
+
 CString ELM::GetText() {
 	CString Text;
 	switch (ELMText) {
@@ -309,13 +314,14 @@ ELM* CGame::CreateELM(int text, int type) {
 	elm = new ELM();
 	elm->SetType(type);
 	elm->SetText(text);
+	elm->UpdateEid();
 	return elm;
 }
 
 void CGame::GMStart() {
 	int bid = 1;
-	for (int i = 1; i < 10; i++) {
-		for (int j = 1; j < 10; j++) {
+	for (int i = 9; i >=1; i--) {
+		for (int j = 1; j <=9; j++) {
 			Pos[i][j] = CreateELM(i, j);
 		}
 	}
@@ -327,7 +333,7 @@ void CGame::GMStart() {
 void CGame::Load() {
 	for (int i = 1; i < 10; i++) {
 		for (int j = 1; j < 10; j++) {
-			GetDlgItem(2700 + Pos[i][j]->GetBid())->SetWindowText(Pos[i][j]->GetText());
+			GetDlgItem(2700 + XYtoBid(i,j))->SetWindowText(Pos[i][j]->GetText());
 		}
 	}
 
@@ -354,7 +360,8 @@ void CGame::Fall() {
 				Pos[i][j] = CreateELM();
 			}
 			else {
-				std::swap(Pos[i][j], Pos[i + 1][j]);
+				std::swap(Pos[i][j], Pos[i - 1][j]);
+				Pos[i][j]->UpdateEid();
 			}
 		}
 	}
@@ -371,6 +378,10 @@ int CGame::BidtoX(int bid) {
 int CGame::BidtoY(int bid) {
 	if (bid % 9) return bid % 9;
 	else return 9;
+}
+
+int CGame::XYtoBid(int x,int y) {
+	return (x - 1) * 9 + y;
 }
 
 bool CGame::JudgeEx(int bid1, int bid2) {

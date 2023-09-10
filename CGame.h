@@ -8,18 +8,21 @@ private:
 	int ELMText;
 	int ELMType;
 	int ELMStatus;
+	static int count;
+	int Eid;
 public:
 	ELM() {
 		ELMText = 1;
 		ELMType = 1;
 		ELMStatus = 0;
+		Eid = 0;
 	}
 	~ELM() {};
 	void SetType(int type);
 	void SetText(int text);
 	void SetStatus(int sta);
+	void UpdateEid();
 	CString GetText();	//为与之匹配的按钮提供文本
-	int GetBid();
 };
 
 // CGame 对话框
@@ -86,6 +89,8 @@ public:
 	int BidtoX(int bid);
 	//获取纵坐标
 	int BidtoY(int bid);
+	//获取Bid
+	int XYtoBid(int x, int y);
 	//判断二者是否相邻
 	bool JudgeEx(int bid1, int bid2);
 };
