@@ -2,6 +2,34 @@
 #include "afxdialogex.h"
 
 
+class ELM
+{
+private:
+	int Bid;
+	int ELMText;
+	int X;
+	int Y;
+	int ELMType;
+	int ELMStatus;
+public:
+	ELM() {
+		Bid = 0;
+		ELMText = 1;
+		X = 0;
+		Y = 0;
+		ELMType = 1;
+		ELMStatus = 0;
+	}
+	~ELM() {};
+	void SetBid(int bid);
+	void SetXY(int x, int y);
+	void SetType(int type);
+	void SetText(int text);
+	void SetStatus(int sta);
+	CString GetText();	//为与之匹配的按钮提供文本
+	int GetBid();
+};
+
 // CGame 对话框
 
 class CGame : public CDialogEx
@@ -11,7 +39,6 @@ class CGame : public CDialogEx
 public:
 	CGame(CWnd* pParent = nullptr);   // 标准构造函数
 	virtual ~CGame();
-	CFont* m_Font;
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
@@ -27,7 +54,8 @@ public:
 	template <int bid> afx_msg void OnBnClickedButton();
 	CButton BTN[100];
 	virtual BOOL OnInitDialog();
-	static CWnd* Game_cwnd;
+	int AlCh;
+	//static CWnd* Game_cwnd;
 
 	//以下为Game Core
 	ELM* elm;
@@ -62,4 +90,7 @@ public:
 	void Fall(int y);
 	// 判断是否可以消除
 	void Judge(bool ifstart = 0);
+	int BidtoX(int bid);
+	int BidtoY(int bid);
+	bool JudgeEx(int bid1, int bid2);
 };

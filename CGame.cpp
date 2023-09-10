@@ -5,9 +5,9 @@
 #include "TikSEU.h"
 #include "afxdialogex.h"
 #include "CGame.h"
-#include "game_core.h"
 #include "ctime"
 #include "random"
+#include "string"
 using std::string;
 
 // CGame 对话框
@@ -17,7 +17,14 @@ IMPLEMENT_DYNAMIC(CGame, CDialogEx)
 CGame::CGame(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(Game, pParent)
 {
-
+	elm = NULL;
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j <= 10; j++) {
+			Pos[i][j] = NULL;
+		}
+	}
+	Score = 0;
+	AlCh = 0;
 }
 
 CGame::~CGame()
@@ -215,6 +222,34 @@ template <int bid> void CGame::OnBnClickedButton()
 	GetDlgItem(2700+bid)->SetWindowText(L"开启");
 	*/
 	//GetDlgItem(2700 + bid)->SetWindowText(L"开启");
+	//CButton* ThisBTN = GetDlgItem(2700 + bid);
+	//GetDlgItem(2700 + bid)->SetWindowText();
+
+	//判断已选中两个能否交换
+	if (!AlCh || AlCh == bid) {
+		BTN[bid].SetState(1);
+		AlCh = bid;
+	}
+	else { 
+		if (JudgeEx(AlCh, bid)) {
+			BTN[bid].SetState(1);
+			Sleep(1000);
+			Exchange(BidtoX(AlCh), BidtoY(AlCh), BidtoX(bid), BidtoY(bid));
+			BTN[AlCh].SetState(0);
+			BTN[bid].SetState(0);	//后续此处可以想想改成要被消除的先全变成选中状态
+			AlCh = 0;
+		}
+		else {
+			BTN[bid].SetState(1);
+			Sleep(1000);
+			BTN[AlCh].SetState(0);
+			BTN[bid].SetState(0);
+			AlCh = 0;
+		}
+	}
+	
+	
+	//BTN[bid].SetFont();
 }
 
 
@@ -223,21 +258,58 @@ template <int bid> void CGame::OnBnClickedButton()
 BOOL CGame::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	Game_cwnd = this;
-	elm = NULL;
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j <= 10; j++) {
-			Pos[i][j] = NULL;
-		}
-	}
-	Score = 0;
+	//Game_cwnd = this;
+	
 	// TODO:  在此添加额外的初始化
-
+	GMStart();
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
 
 //以下为Game Core
+
+void ELM::SetBid(int bid) {
+	Bid = bid;
+}
+
+void ELM::SetXY(int x, int y) {
+	X = x;
+	Y = y;
+}
+
+void ELM::SetType(int type) {
+	ELMType = type;
+}
+
+void ELM::SetText(int text) {
+	ELMText = text;
+}
+
+void ELM::SetStatus(int sta) {
+	ELMStatus = sta;
+}
+
+CString ELM::GetText() {
+	CString Text;
+	switch (ELMText) {
+	case 1:Text = "东"; break;
+	case 2:Text = "南"; break;
+	case 3:Text = "西"; break;
+	case 4:Text = "北"; break;
+	case 5:Text = "中"; break;
+	}
+	switch (ELMType) {
+	case 2:Text = _T("←") + Text + _T("→"); break;	//横向特效
+	case 3:Text = _T("↑") + Text + _T("↓"); break;	//纵向特效
+	case 4:Text = _T("！") + Text + _T("！"); break;	//爆炸特效
+	case 5:Text = _T("？") + Text + _T("？"); break;	//寻找特效
+	}
+	return Text;
+}
+
+int ELM::GetBid() {
+	return Bid;
+}
 
 ELM* CGame::CreateELM(int x, int y, int bid, int text, int type) {
 	elm = new ELM();
@@ -286,4 +358,21 @@ void CGame::Fall(int y) {
 
 void CGame::Judge(bool ifstart) {
 
+}
+
+int CGame::BidtoX(int bid) {
+	return (bid - 1) / 9 + 1;
+}
+
+int CGame::BidtoY(int bid) {
+	if (bid % 9) return bid % 9;
+	else return 9;
+}
+
+//判断二者是否相邻
+bool CGame::JudgeEx(int bid1, int bid2) {
+	if ((BidtoX(bid1) == BidtoX(bid2)) && ((abs(BidtoY(bid1) - BidtoY(bid2)) == 1))) return 1;
+	if ((BidtoY(bid1) == BidtoY(bid2)) && ((abs(BidtoX(bid1) - BidtoX(bid2)) == 1))) return 1;
+	// TODO 此处还须添加寻找特效
+	return 0;
 }
