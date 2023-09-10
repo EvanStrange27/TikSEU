@@ -12,11 +12,19 @@
 #define IDB_BITMAP1                     134
 #define IDB_BITMAP2                     136
 #define IDC_BUTTON1                     1000
+#define IDC_BUTTON2                     1001
 #define IDC_SCROLLBAR1                  1002
+#define IDC_BUTTON3                     1002
 #define IDC_EDIT1                       1003
 #define Main_Play                       1004
 #define Main_Ranking                    1005
+#define IDC_BUTTON4                     1005
 #define Main_Quit                       1006
+#define IDC_BUTTON5                     1006
+#define IDC_BUTTON6                     1007
+#define IDC_BUTTON7                     1008
+#define IDC_BUTTON8                     1009
+#define IDC_BUTTON9                     1010
 
 // Next default values for new objects
 // 
