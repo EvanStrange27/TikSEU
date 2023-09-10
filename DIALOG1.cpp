@@ -25,11 +25,13 @@ DIALOG1::~DIALOG1()
 void DIALOG1::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_HORI_SCROLLBAR, m_horiScrollbar);
 }
 
 
 BEGIN_MESSAGE_MAP(DIALOG1, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &DIALOG1::OnBnClickedButton1)
+	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
 
@@ -46,3 +48,83 @@ void DIALOG1::OnBnClickedButton1()
 	UpdateData(TRUE);
 	UpdateData(FALSE);
 }
+
+
+BOOL DIALOG1::OnInitDialog()
+{
+		CDialogEx::OnInitDialog();
+
+		// 将“关于...”菜单项添加到系统菜单中。
+
+		// IDM_ABOUTBOX 必须在系统命令范围内。
+		ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+		ASSERT(IDM_ABOUTBOX < 0xF000);
+
+		CMenu* pSysMenu = GetSystemMenu(FALSE);
+		if (pSysMenu != nullptr)
+		{
+			BOOL bNameValid;
+			CString strAboutMenu;
+			bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
+			ASSERT(bNameValid);
+			if (!strAboutMenu.IsEmpty())
+			{
+				pSysMenu->AppendMenu(MF_SEPARATOR);
+				pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+			}
+		}
+
+		m_horiScrollbar.SetScrollRange(1, 100);
+		m_horiScrollbar.SetScrollPos(20);
+
+		// TODO: 在此添加额外的初始化代码
+
+		return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
+	}
+
+
+
+void DIALOG1::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	int pos = m_horiScrollbar.GetScrollPos(); // 获取水平滚动条当前位置
+	switch (nSBCode)
+	{
+		// 如果向左滚动一列，则 pos 减 1
+	case SB_LINEUP:
+		pos -= 1;
+		break;
+		// 如果向右滚动一列，则 pos 加 1
+	case SB_LINEDOWN:
+		pos += 1;
+		break;
+		// 如果向左滚动一页，则 pos 减 10
+	case SB_PAGEUP:
+		pos -= 10;
+		break;
+		// 如果向右滚动一页，则 pos 加 10
+	case SB_PAGEDOWN:
+		pos += 10;
+		break;
+		// 如果滚动到最左端，则 pos 为 1
+	case SB_TOP:
+		pos = 1;
+		break;
+		// 如果滚动到最右端，则 pos 为 100
+	case SB_BOTTOM:
+		pos = 100;
+		break;
+		// 如果拖动滚动块滚动到指定位置，则 pos 赋值为 nPos 的值
+	case SB_THUMBPOSITION:
+		pos = nPos;
+		break;
+		// 下面的 m_horiScrollbar.SetScrollPos(pos);执行时会第二次进入此函数，最终确定滚动块位置，并且会直接到 default 分支，所以在此处设置编辑框中显示数值
+	default:
+		SetDlgItemInt(IDC_HSCROLL_EDIT, pos);
+		return;
+	}
+	// 设置滚动块位置
+	m_horiScrollbar.SetScrollPos(pos);
+	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+

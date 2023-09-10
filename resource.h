@@ -17,7 +17,9 @@
 #define IDC_BUTTON2                     1001
 #define IDC_SCROLLBAR1                  1002
 #define IDC_BUTTON3                     1002
+#define IDC_HORI_SCROLLBAR              1002
 #define IDC_EDIT1                       1003
+#define IDC_HSCROLL_EDIT                1003
 #define Main_Play                       1004
 #define Main_Ranking                    1005
 #define IDC_BUTTON4                     1005
