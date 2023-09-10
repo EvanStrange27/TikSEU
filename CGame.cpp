@@ -6,6 +6,9 @@
 #include "afxdialogex.h"
 #include "CGame.h"
 #include "game_core.h"
+#include "ctime"
+#include "random"
+using std::string;
 
 // CGame 对话框
 
@@ -206,8 +209,81 @@ END_MESSAGE_MAP()
 template <int bid> void CGame::OnBnClickedButton()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	/*	测试更改文本的代码
 	CString str;
 	GetDlgItem(2700+bid)->GetWindowText(str);
 	GetDlgItem(2700+bid)->SetWindowText(L"开启");
+	*/
+	//GetDlgItem(2700 + bid)->SetWindowText(L"开启");
+}
+
+
+
+
+BOOL CGame::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+	Game_cwnd = this;
+	elm = NULL;
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j <= 10; j++) {
+			Pos[i][j] = NULL;
+		}
+	}
+	Score = 0;
+	// TODO:  在此添加额外的初始化
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	// 异常: OCX 属性页应返回 FALSE
+}
+
+//以下为Game Core
+
+ELM* CGame::CreateELM(int x, int y, int bid, int text, int type) {
+	elm = new ELM();
+	elm->SetBid(bid);
+	elm->SetType(type);
+	elm->SetText(text);
+	elm->SetXY(x, y);
+	return elm;
+}
+
+void CGame::GMStart() {
+	std::default_random_engine dre;				 // 产生随机非负数
+	std::uniform_int_distribution<int> uid(1, 5); // 左闭右闭区间，产生均匀分布的整数
+	dre.seed(time(0));
+	int bid = 1;
+	for (int i = 1; i < 10; i++) {
+		for (int j = 1; j < 10; j++) {
+			Pos[i][j] = CreateELM(i, j, bid++, uid(dre));
+		}
+	}
+
+	Judge(1);
+	Load();
+}
+
+void CGame::Load() {
+	for (int i = 1; i < 10; i++) {
+		for (int j = 1; j < 10; j++) {
+			GetDlgItem(2700 + Pos[i][j]->GetBid())->SetWindowText(Pos[i][j]->GetText());
+		}
+	}
+
+}
+
+void CGame::Exchange(int x1, int y1, int x2, int y2) {
+
+}
+
+void CGame::ClearELM(int x, int y) {
+
+}
+
+void CGame::Fall(int y) {
+
+}
+
+void CGame::Judge(bool ifstart) {
 
 }
