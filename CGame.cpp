@@ -299,6 +299,7 @@ CString ELM::GetText() {
 	case 3:Text = _T("↑") + Text + _T("↓"); break;	//纵向特效
 	case 4:Text = _T("！") + Text + _T("！"); break;	//爆炸特效
 	case 5:Text = _T("？") + Text + _T("？"); break;	//寻找特效
+	default:break;
 	}
 	return Text;
 }
@@ -331,8 +332,8 @@ void CGame::GMStart() {
 }
 
 void CGame::Load() {
-	for (int i = 1; i < 10; i++) {
-		for (int j = 1; j < 10; j++) {
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
 			GetDlgItem(2700 + XYtoBid(i,j))->SetWindowText(Pos[i][j]->GetText());
 		}
 	}
