@@ -15,6 +15,10 @@ void ELM::SetType(int type) {
 	ELMType = type;
 }
 
+void ELM::SetStatus(int sta) {
+	ELMStatus = sta;
+}
+
 void ELM::ShowText() {
 
 }

@@ -15,6 +15,7 @@ private:
 	int X;
 	int Y;
 	int ELMType;
+	int ELMStatus;
 public:
 	ELM() {
 		Bid = 0;
@@ -22,11 +23,13 @@ public:
 		X = 0;
 		Y = 0;
 		ELMType = 1;
+		ELMStatus = 1;
 	}
 	~ELM() {};
 	void SetBid(int bid);
 	void SetXY(int x,int y);
 	void SetType(int type);
+	void SetStatus(int sta);
 	void ShowText();	//为与之匹配的按钮显示文本
 };
 
