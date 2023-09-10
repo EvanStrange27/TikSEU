@@ -12,7 +12,9 @@
 #define IDB_BITMAP1                     134
 #define IDB_BITMAP2                     136
 #define IDC_BUTTON1                     1000
+#define IDC_BUTTON2                     1001
 #define IDC_SCROLLBAR1                  1002
+#define IDC_BUTTON3                     1002
 #define IDC_EDIT1                       1003
 #define Main_Play                       1004
 #define Main_Ranking                    1005
