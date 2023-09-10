@@ -268,15 +268,6 @@ BOOL CGame::OnInitDialog()
 
 //以下为Game Core
 
-void ELM::SetBid(int bid) {
-	Bid = bid;
-}
-
-void ELM::SetXY(int x, int y) {
-	X = x;
-	Y = y;
-}
-
 void ELM::SetType(int type) {
 	ELMType = type;
 }
@@ -307,27 +298,25 @@ CString ELM::GetText() {
 	return Text;
 }
 
-int ELM::GetBid() {
-	return Bid;
-}
 
-ELM* CGame::CreateELM(int x, int y, int bid, int text, int type) {
+ELM* CGame::CreateELM(int text, int type) {
+	if (!text) {
+		std::default_random_engine dre;				 // 产生随机非负数
+		std::uniform_int_distribution<int> uid(1, 5); // 左闭右闭区间，产生均匀分布的整数
+		dre.seed(time(0));
+		text = uid(dre);
+	}
 	elm = new ELM();
-	elm->SetBid(bid);
 	elm->SetType(type);
 	elm->SetText(text);
-	elm->SetXY(x, y);
 	return elm;
 }
 
 void CGame::GMStart() {
-	std::default_random_engine dre;				 // 产生随机非负数
-	std::uniform_int_distribution<int> uid(1, 5); // 左闭右闭区间，产生均匀分布的整数
-	dre.seed(time(0));
 	int bid = 1;
 	for (int i = 1; i < 10; i++) {
 		for (int j = 1; j < 10; j++) {
-			Pos[i][j] = CreateELM(i, j, bid++, uid(dre));
+			Pos[i][j] = CreateELM(i, j);
 		}
 	}
 
@@ -349,11 +338,26 @@ void CGame::Exchange(int x1, int y1, int x2, int y2) {
 }
 
 void CGame::ClearELM(int x, int y) {
-
+	delete Pos[x][y];
+	Pos[x][y] = NULL;
 }
 
-void CGame::Fall(int y) {
-
+void CGame::Fall() {
+	int j = 1;
+	while(j <= 9) {
+		int i = 9;
+		while (Pos[i][j]!=NULL && i > 0) i--;
+		if (!i) continue;
+		int k = i;
+		while (i > 0 && Pos[i][j] == NULL) {
+			if (i==1) {
+				Pos[i][j] = CreateELM();
+			}
+			else {
+				std::swap(Pos[i][j], Pos[i + 1][j]);
+			}
+		}
+	}
 }
 
 void CGame::Judge(bool ifstart) {
@@ -369,7 +373,6 @@ int CGame::BidtoY(int bid) {
 	else return 9;
 }
 
-//判断二者是否相邻
 bool CGame::JudgeEx(int bid1, int bid2) {
 	if ((BidtoX(bid1) == BidtoX(bid2)) && ((abs(BidtoY(bid1) - BidtoY(bid2)) == 1))) return 1;
 	if ((BidtoY(bid1) == BidtoY(bid2)) && ((abs(BidtoX(bid1) - BidtoX(bid2)) == 1))) return 1;

@@ -5,24 +5,16 @@
 class ELM
 {
 private:
-	int Bid;
 	int ELMText;
-	int X;
-	int Y;
 	int ELMType;
 	int ELMStatus;
 public:
 	ELM() {
-		Bid = 0;
 		ELMText = 1;
-		X = 0;
-		Y = 0;
 		ELMType = 1;
 		ELMStatus = 0;
 	}
 	~ELM() {};
-	void SetBid(int bid);
-	void SetXY(int x, int y);
 	void SetType(int type);
 	void SetText(int text);
 	void SetStatus(int sta);
@@ -61,7 +53,7 @@ public:
 	ELM* elm;
 	ELM* Pos[10][10];
 	int Score;
-	ELM* CreateELM(int x, int y, int bid, int text, int type = 1);
+	ELM* CreateELM(int text = 0, int type = 1);
 	/*	游戏开始
 	* 流程
 	* 随机创建81个元素
@@ -87,10 +79,13 @@ public:
 	* 递归循环
 	* 从最下方一个开始，指针指向上一行，直到最下面一行不为NULL
 	*/
-	void Fall(int y);
+	void Fall();
 	// 判断是否可以消除
 	void Judge(bool ifstart = 0);
+	//获取横坐标
 	int BidtoX(int bid);
+	//获取纵坐标
 	int BidtoY(int bid);
+	//判断二者是否相邻
 	bool JudgeEx(int bid1, int bid2);
 };
