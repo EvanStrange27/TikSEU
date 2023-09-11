@@ -439,7 +439,7 @@ bool CGame::Judge() {
 					if (JudgeCount >= 5) {
 						int BidMax = FindMaxEid(ContinueA, JudgeCount);
 						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
-						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为寻找特效
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(5);	//变为寻找特效
 					}
 				}
 				j += JudgeCount;
@@ -462,7 +462,7 @@ bool CGame::Judge() {
 				for (int k = 0; k < JudgeCount; k++) {
 					Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->SetStatus(Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->GetStatus() + 1);
 					if (!ifstart) {
-						BTN[ContinueA[k]].SetState(1);
+						//BTN[ContinueA[k]].SetState(1);
 						if (2 == Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->GetStatus()) {
 							int BidMax = FindMaxEid(ContinueA, JudgeCount);
 							Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
@@ -479,7 +479,7 @@ bool CGame::Judge() {
 					if (JudgeCount >= 5) {
 						int BidMax = FindMaxEid(ContinueA, JudgeCount);
 						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
-						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为寻找特效
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(5);	//变为寻找特效
 					}
 				}
 				i -= JudgeCount;
@@ -499,19 +499,18 @@ bool CGame::Judge() {
 	Clear();
 	Load();
 	if(!ifstart) 
-		Sleep(1000);
+		Sleep(500);
 	//下落
 	Fall();
 
 	//重置状态
 	ResetStatus();
+	Load();
+	if (!ifstart)
+		Sleep(500);
 
 	if (ifJudge) 
 		Judge();
-
-	//
-	Load();
-
 	return ifJudge;
 }
 
@@ -561,12 +560,13 @@ void CGame::FindTypeClear() {
 			}
 		}
 		//选中即将被消除的元素
-		for (int i = 1; i <= 9; i++) {
-			for (int j = 1; j <= 9; j++) {
-				if (1 == Pos[i][j]->GetStatus()) BTN[XYtoBid(i, j)].SetState(1);
-			}
-		}
-		Sleep(1000);
+		//for (int i = 1; i <= 9; i++) {
+		//	for (int j = 1; j <= 9; j++) {
+		//		if (1 == Pos[i][j]->GetStatus()) 
+		//			BTN[XYtoBid(i, j)].SetState(1);
+		//	}
+		//}
+		//Sleep(1000);
 	} while (iftype);
 }
 
