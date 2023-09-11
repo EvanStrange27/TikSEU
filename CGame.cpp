@@ -10,6 +10,8 @@
 #include "string"
 using std::string;
 int ELM::count = 0;
+std::default_random_engine dre;					// 产生随机非负数
+std::uniform_int_distribution<int> uid(1, 5);	// 左闭右闭区间，产生均匀分布的整数
 // CGame 对话框
 
 IMPLEMENT_DYNAMIC(CGame, CDialogEx)
@@ -261,6 +263,7 @@ BOOL CGame::OnInitDialog()
 	//Game_cwnd = this;
 	
 	// TODO:  在此添加额外的初始化
+	dre.seed(time(0));
 	GMStart();
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
@@ -299,7 +302,6 @@ CString ELM::GetText() {
 	case 3:Text = _T("↑") + Text + _T("↓"); break;	//纵向特效
 	case 4:Text = _T("！") + Text + _T("！"); break;	//爆炸特效
 	case 5:Text = _T("？") + Text + _T("？"); break;	//寻找特效
-	default:break;
 	}
 	return Text;
 }
@@ -307,9 +309,6 @@ CString ELM::GetText() {
 
 ELM* CGame::CreateELM(int text, int type) {
 	if (!text) {
-		std::default_random_engine dre;				 // 产生随机非负数
-		std::uniform_int_distribution<int> uid(1, 5); // 左闭右闭区间，产生均匀分布的整数
-		dre.seed(time(0));
 		text = uid(dre);
 	}
 	elm = new ELM();
@@ -320,10 +319,9 @@ ELM* CGame::CreateELM(int text, int type) {
 }
 
 void CGame::GMStart() {
-	int bid = 1;
 	for (int i = 9; i >=1; i--) {
 		for (int j = 1; j <=9; j++) {
-			Pos[i][j] = CreateELM(i, j);
+			Pos[i][j] = CreateELM();
 		}
 	}
 

@@ -12,7 +12,7 @@ private:
 	int Eid;
 public:
 	ELM() {
-		ELMText = 1;
+		ELMText = 0;
 		ELMType = 1;
 		ELMStatus = 0;
 		Eid = 0;
