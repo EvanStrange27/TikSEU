@@ -74,7 +74,7 @@ BOOL DIALOG1::OnInitDialog()
 			}
 		}
 
-		m_horiScrollbar.SetScrollRange(1, 100);
+		m_horiScrollbar.SetScrollRange(0, 100);
 		m_horiScrollbar.SetScrollPos(20);
 
 		// TODO: 在此添加额外的初始化代码
