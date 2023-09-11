@@ -26,4 +26,6 @@ public:
 	CScrollBar m_horiScrollbar;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	int m_HscrollEdit;
+	afx_msg void OnEnChangeHscrollEdit();
 };

@@ -14,6 +14,7 @@ IMPLEMENT_DYNAMIC(DIALOG1, CDialogEx)
 
 DIALOG1::DIALOG1(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG1, pParent)
+	, m_HscrollEdit(0)
 {
 
 }
@@ -26,12 +27,14 @@ void DIALOG1::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_HORI_SCROLLBAR, m_horiScrollbar);
+	DDX_Text(pDX, IDC_HSCROLL_EDIT, m_HscrollEdit);
 }
 
 
 BEGIN_MESSAGE_MAP(DIALOG1, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &DIALOG1::OnBnClickedButton1)
 	ON_WM_HSCROLL()
+	ON_EN_CHANGE(IDC_HSCROLL_EDIT, &DIALOG1::OnEnChangeHscrollEdit)
 END_MESSAGE_MAP()
 
 
@@ -88,6 +91,7 @@ void DIALOG1::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	int pos = m_horiScrollbar.GetScrollPos(); // 获取水平滚动条当前位置
+	
 	switch (nSBCode)
 	{
 		// 如果向左滚动一列，则 pos 减 1
@@ -128,3 +132,17 @@ void DIALOG1::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
+
+
+void DIALOG1::OnEnChangeHscrollEdit()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+	UpdateData(TRUE);
+	if (m_HscrollEdit > 100|| m_HscrollEdit<0)m_HscrollEdit = 0;//如果输入的音量值不合要求则重新归0；
+	m_horiScrollbar.SetScrollPos(m_HscrollEdit);//设置滚动条；
+	UpdateData(FALSE);
+	// TODO:  在此添加控件通知处理程序代码
+}
