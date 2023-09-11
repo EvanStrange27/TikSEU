@@ -25,6 +25,7 @@ public:
 	CString GetText();	//为与之匹配的按钮提供文本
 	int GetType();
 	int GetTextNum();
+	int GetStatus();
 };
 
 // CGame 对话框

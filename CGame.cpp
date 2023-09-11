@@ -314,6 +314,10 @@ int ELM::GetTextNum() {
 	return ELMText;
 }
 
+int ELM::GetStatus() {
+	return ELMStatus;
+}
+
 ELM* CGame::CreateELM(int text, int type) {
 	if (!text) {
 		text = uid(dre);
@@ -374,15 +378,70 @@ void CGame::Fall() {
 }
 
 void CGame::Judge(bool ifstart) {
-	int Text;
-
+	int Text=0;
+	int JudgeCount = 0;
+	int ContinueA[10] = { 0 };
 	//先横向找
 	for (int i = 9; i >= 1; i--) {
 		for (int j = 1; j <= 7; j++) {
-
+			Text = Pos[i][j]->GetTextNum();
+			JudgeCount = 1;
+			ContinueA[0] = XYtoBid(i, j);
+			while (Text == Pos[i][j + JudgeCount]->GetTextNum()) {
+				ContinueA[JudgeCount++] = XYtoBid(i, j + JudgeCount);
+			}
+			if (JudgeCount >= 3) {
+				for (int k = 0; k < JudgeCount; k++) {
+					Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->SetStatus(Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->GetStatus() + 1);
+				}
+				if (JudgeCount == 4) {
+					int BidMax = FindMaxEid(ContinueA);
+					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
+					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为纵向特效
+				}
+				if (JudgeCount >= 5) {
+					int BidMax = FindMaxEid(ContinueA);
+					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
+					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为寻找特效
+				}
+				j += JudgeCount;
+			}
+			
 		}
 	}
 	//再纵向找
+	for (int j = 1; j <= 9; j++) {
+		for (int i = 9; i >=2; i--) {
+			Text = Pos[i][j]->GetTextNum();
+			JudgeCount = 1;
+			ContinueA[0] = XYtoBid(i, j);
+			while (Text == Pos[i][j + JudgeCount]->GetTextNum()) {
+				ContinueA[JudgeCount++] = XYtoBid(i - JudgeCount, j);
+			}
+			if (JudgeCount >= 3) {
+				for (int k = 0; k < JudgeCount; k++) {
+					Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->SetStatus(Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->GetStatus() + 1);
+					if (Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->GetStatus() == 2) {
+						int BidMax = FindMaxEid(ContinueA);
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(4);	//变为爆炸特效
+					}
+				}
+				if (JudgeCount == 4) {
+					int BidMax = FindMaxEid(ContinueA);
+					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
+					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(2);	//变为横向特效
+				}
+				if (JudgeCount >= 5) {
+					int BidMax = FindMaxEid(ContinueA);
+					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
+					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为寻找特效
+				}
+				i -= JudgeCount;
+			}
+			
+		}
+	}
 }
 
 int CGame::BidtoX(int bid) {
@@ -401,7 +460,7 @@ int CGame::XYtoBid(int x,int y) {
 bool CGame::JudgeEx(int bid1, int bid2) {
 	if ((BidtoX(bid1) == BidtoX(bid2)) && ((abs(BidtoY(bid1) - BidtoY(bid2)) == 1))) return 1;
 	if ((BidtoY(bid1) == BidtoY(bid2)) && ((abs(BidtoX(bid1) - BidtoX(bid2)) == 1))) return 1;
-	// TODO 此处还须添加寻找特效
+	// TODO：此处还须添加寻找特效
 	if (Pos[BidtoX(bid1)][BidtoY(bid1)]->GetType() == 5 || Pos[BidtoX(bid2)][BidtoY(bid2)]->GetType() == 5) return 1;
 	return 0;
 }
