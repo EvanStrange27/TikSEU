@@ -26,6 +26,7 @@ public:
 	int GetType();
 	int GetTextNum();
 	int GetStatus();
+	int GetEid();
 };
 
 // CGame 对话框
@@ -87,7 +88,7 @@ public:
 	*/
 	void Fall();
 	// 判断是否可以消除
-	void Judge(bool ifstart = 0);
+	bool Judge();
 	//获取横坐标
 	int BidtoX(int bid);
 	//获取纵坐标
@@ -96,4 +97,20 @@ public:
 	int XYtoBid(int x, int y);
 	//判断二者是否相邻
 	bool JudgeEx(int bid1, int bid2);
+	//寻找待消除列表中Eid最大的Bid
+	int FindMaxEid(int* array, int N);
+	//寻找特效触发
+	void FindTypeClear();
+	//触发横向特效
+	void ClearType2(int x, int y);
+	//触发纵向特效
+	void ClearType3(int x, int y);
+	//触发爆炸特效
+	void ClearType4(int x, int y);
+	//触发寻找特效
+	void ClearType5(int x, int y);
+	//清除
+	void Clear();
+	//重置状态
+	void ResetStatus();
 };

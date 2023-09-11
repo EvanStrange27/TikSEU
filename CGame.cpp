@@ -10,6 +10,7 @@
 #include "string"
 using std::string;
 int ELM::count = 0;
+bool ifstart;
 std::default_random_engine dre;					// 产生随机非负数
 std::uniform_int_distribution<int> uid(1, 5);	// 左闭右闭区间，产生均匀分布的整数
 // CGame 对话框
@@ -228,17 +229,14 @@ template <int bid> void CGame::OnBnClickedButton()
 	//GetDlgItem(2700 + bid)->SetWindowText();
 
 	//判断已选中两个能否交换
-	if (!AlCh || AlCh==bid) {
+	if (!AlCh || AlCh == bid) {
 		BTN[bid].SetState(1);
 		AlCh = bid;
 	}
-	else { 
+	else {
 		if (JudgeEx(AlCh, bid)) {
 			BTN[bid].SetState(1);
-			Sleep(1000);
 			Exchange(BidtoX(AlCh), BidtoY(AlCh), BidtoX(bid), BidtoY(bid));
-			BTN[AlCh].SetState(0);
-			BTN[bid].SetState(0);	//后续此处可以想想改成要被消除的先全变成选中状态
 			AlCh = 0;
 		}
 		else {
@@ -249,8 +247,8 @@ template <int bid> void CGame::OnBnClickedButton()
 			AlCh = 0;
 		}
 	}
-	
-	
+
+
 	//BTN[bid].SetFont();
 }
 
@@ -261,7 +259,7 @@ BOOL CGame::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	//Game_cwnd = this;
-	
+
 	// TODO:  在此添加额外的初始化
 	dre.seed(time(0));
 	GMStart();
@@ -288,6 +286,10 @@ void ELM::UpdateEid() {
 	Eid = count;
 }
 
+int ELM::GetEid() {
+	return Eid;
+}
+
 CString ELM::GetText() {
 	CString Text;
 	switch (ELMText) {
@@ -301,7 +303,7 @@ CString ELM::GetText() {
 	case 2:Text = _T("←") + Text + _T("→"); break;	//横向特效
 	case 3:Text = _T("↑") + Text + _T("↓"); break;	//纵向特效
 	case 4:Text = _T("！") + Text + _T("！"); break;	//爆炸特效
-	case 5:Text = _T("？") + Text + _T("？"); break;	//寻找特效
+	case 5:Text = "叮东"; break;	//寻找特效
 	}
 	return Text;
 }
@@ -330,27 +332,51 @@ ELM* CGame::CreateELM(int text, int type) {
 }
 
 void CGame::GMStart() {
-	for (int i = 9; i >=1; i--) {
-		for (int j = 1; j <=9; j++) {
+	ifstart = 1;
+	for (int i = 9; i >= 1; i--) {
+		for (int j = 1; j <= 9; j++) {
 			Pos[i][j] = CreateELM();
 		}
 	}
-
-	Judge(1);
-	Load();
+	//Load();
+	Judge();
+	ifstart = 0;
 }
 
 void CGame::Load() {
 	for (int i = 1; i <= 9; i++) {
 		for (int j = 1; j <= 9; j++) {
-			GetDlgItem(2700 + XYtoBid(i,j))->SetWindowText(Pos[i][j]->GetText());
+			BTN[XYtoBid(i, j)].SetState(0);
+			if(Pos[i][j]) GetDlgItem(2700 + XYtoBid(i, j))->SetWindowText(Pos[i][j]->GetText());
+			else GetDlgItem(2700 + XYtoBid(i, j))->SetWindowText(L"");
 		}
 	}
 
 }
 
 void CGame::Exchange(int x1, int y1, int x2, int y2) {
+	std::swap(Pos[x1][y1], Pos[x2][y2]);
+	Pos[x1][y1]->UpdateEid();
+	Pos[x2][y2]->UpdateEid();
+	Load();
+	if (5 == Pos[x1][y1]->GetType() && 5 == Pos[x1][y1]->GetType()) {
 
+	}
+	else if (5 == Pos[x1][y1]->GetType()) {
+
+	}
+	else if (5 == Pos[x2][y2]->GetType()) {
+
+	}
+	else {
+		if (Judge()) {
+			
+		}
+		else {
+			std::swap(Pos[x1][y1], Pos[x2][y2]);
+			Load();
+		}
+	}
 }
 
 void CGame::ClearELM(int x, int y) {
@@ -360,25 +386,31 @@ void CGame::ClearELM(int x, int y) {
 
 void CGame::Fall() {
 	int j = 1;
-	while(j <= 9) {
+	while (j <= 9) {
 		int i = 9;
-		while (Pos[i][j]!=NULL && i > 0) i--;
-		if (!i) continue;
-		int k = i;
-		while (i > 0 && Pos[i][j] == NULL) {
-			if (i==1) {
-				Pos[i][j] = CreateELM();
-			}
-			else {
-				std::swap(Pos[i][j], Pos[i - 1][j]);
-				Pos[i][j]->UpdateEid();
+		bool ifNoNULL = 1;
+		while (i >= 1 && Pos[i][j] != NULL) i--;
+		if (!i) {
+			j++;
+			continue;
+		}
+		while (NULL == Pos[i][j]) {
+			for (int k = i; k >= 1; k--) {
+				if (k == 1) {
+					Pos[k][j] = CreateELM();
+				}
+				else {
+					std::swap(Pos[k][j], Pos[k - 1][j]);
+					if (Pos[k][j]) Pos[k][j]->UpdateEid();
+				}
 			}
 		}
 	}
 }
 
-void CGame::Judge(bool ifstart) {
-	int Text=0;
+bool CGame::Judge() {
+	bool ifJudge = 0;
+	int Text = 0;
 	int JudgeCount = 0;
 	int ContinueA[10] = { 0 };
 	//先横向找
@@ -387,61 +419,100 @@ void CGame::Judge(bool ifstart) {
 			Text = Pos[i][j]->GetTextNum();
 			JudgeCount = 1;
 			ContinueA[0] = XYtoBid(i, j);
-			while (Text == Pos[i][j + JudgeCount]->GetTextNum()) {
-				ContinueA[JudgeCount++] = XYtoBid(i, j + JudgeCount);
+			while (j + JudgeCount <= 9 && Text == Pos[i][j + JudgeCount]->GetTextNum()) {
+				ContinueA[JudgeCount] = XYtoBid(i, j + JudgeCount);
+				JudgeCount++;
 			}
 			if (JudgeCount >= 3) {
+				ifJudge = 1;
 				for (int k = 0; k < JudgeCount; k++) {
 					Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->SetStatus(Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->GetStatus() + 1);
+					if (!ifstart)
+						BTN[ContinueA[k]].SetState(1);
 				}
-				if (JudgeCount == 4) {
-					int BidMax = FindMaxEid(ContinueA);
-					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
-					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为纵向特效
-				}
-				if (JudgeCount >= 5) {
-					int BidMax = FindMaxEid(ContinueA);
-					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
-					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为寻找特效
+				if (!ifstart) {
+					if (JudgeCount == 4) {
+						int BidMax = FindMaxEid(ContinueA, JudgeCount);
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为纵向特效
+					}
+					if (JudgeCount >= 5) {
+						int BidMax = FindMaxEid(ContinueA, JudgeCount);
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为寻找特效
+					}
 				}
 				j += JudgeCount;
 			}
-			
+
 		}
 	}
 	//再纵向找
 	for (int j = 1; j <= 9; j++) {
-		for (int i = 9; i >=2; i--) {
+		for (int i = 9; i >= 3; i--) {
 			Text = Pos[i][j]->GetTextNum();
 			JudgeCount = 1;
 			ContinueA[0] = XYtoBid(i, j);
-			while (Text == Pos[i][j + JudgeCount]->GetTextNum()) {
-				ContinueA[JudgeCount++] = XYtoBid(i - JudgeCount, j);
+			while (i - JudgeCount >= 1 && Text == Pos[i - JudgeCount][j]->GetTextNum()) {
+				ContinueA[JudgeCount] = XYtoBid(i - JudgeCount, j);
+				JudgeCount++;
 			}
 			if (JudgeCount >= 3) {
+				ifJudge = 1;
 				for (int k = 0; k < JudgeCount; k++) {
 					Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->SetStatus(Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->GetStatus() + 1);
-					if (Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->GetStatus() == 2) {
-						int BidMax = FindMaxEid(ContinueA);
-						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
-						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(4);	//变为爆炸特效
+					if (!ifstart) {
+						BTN[ContinueA[k]].SetState(1);
+						if (2 == Pos[BidtoX(ContinueA[k])][BidtoY(ContinueA[k])]->GetStatus()) {
+							int BidMax = FindMaxEid(ContinueA, JudgeCount);
+							Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
+							Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(4);	//变为爆炸特效
+						}
 					}
 				}
-				if (JudgeCount == 4) {
-					int BidMax = FindMaxEid(ContinueA);
-					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
-					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(2);	//变为横向特效
-				}
-				if (JudgeCount >= 5) {
-					int BidMax = FindMaxEid(ContinueA);
-					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
-					Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为寻找特效
+				if (!ifstart) {
+					if (JudgeCount == 4) {
+						int BidMax = FindMaxEid(ContinueA, JudgeCount);
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(2);	//变为横向特效
+					}
+					if (JudgeCount >= 5) {
+						int BidMax = FindMaxEid(ContinueA, JudgeCount);
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetStatus(-1);	//暂时更改为不可改变状态
+						Pos[BidtoX(BidMax)][BidtoY(BidMax)]->SetType(3);	//变为寻找特效
+					}
 				}
 				i -= JudgeCount;
 			}
-			
+
 		}
 	}
+
+	/*	消除
+	* 第一，找出所有状态为1（待消除）的ELM
+	* 第二，触发其中的特效（即将指定范围内的ELM标记为1），休眠1秒
+	* 第三，找出所有状态为1的ELM，删除元素，将指针置空NULL
+	* 最后，找出所有状态为-1的ELM，状态改回0
+	*/
+	if (!ifstart) 
+		FindTypeClear();
+	Clear();
+	Load();
+	if(!ifstart) 
+		Sleep(1000);
+	//下落
+	Fall();
+
+	//重置状态
+	ResetStatus();
+
+	if (ifJudge) 
+		Judge();
+
+	//
+	Load();
+
+	return ifJudge;
 }
 
 int CGame::BidtoX(int bid) {
@@ -453,7 +524,7 @@ int CGame::BidtoY(int bid) {
 	else return 9;
 }
 
-int CGame::XYtoBid(int x,int y) {
+int CGame::XYtoBid(int x, int y) {
 	return (x - 1) * 9 + y;
 }
 
@@ -463,4 +534,104 @@ bool CGame::JudgeEx(int bid1, int bid2) {
 	// TODO：此处还须添加寻找特效
 	if (Pos[BidtoX(bid1)][BidtoY(bid1)]->GetType() == 5 || Pos[BidtoX(bid2)][BidtoY(bid2)]->GetType() == 5) return 1;
 	return 0;
+}
+
+int CGame::FindMaxEid(int* array, int N) {
+	int MaxBid = array[0];
+	for (int i = 1; i < N; i++) {
+		if (Pos[BidtoX(array[i])][BidtoY(array[i])]->GetEid() > Pos[BidtoX(MaxBid)][BidtoY(MaxBid)]->GetEid()) MaxBid = array[i];
+	}
+	return MaxBid;
+}
+
+void CGame::FindTypeClear() {
+	bool iftype;
+	do {
+		iftype = 0;
+		for (int i = 1; i <= 9; i++) {
+			for (int j = 1; j <= 9; j++) {
+				if (1 == Pos[i][j]->GetStatus()) {
+					switch (Pos[i][j]->GetType()) {
+					case 2:ClearType2(i, j); iftype = 1; break;
+					case 3:ClearType3(i, j); iftype = 1; break;
+					case 4:ClearType4(i, j); iftype = 1; break;
+					case 5:ClearType5(i, j); iftype = 1; break;
+					}
+				}
+			}
+		}
+		//选中即将被消除的元素
+		for (int i = 1; i <= 9; i++) {
+			for (int j = 1; j <= 9; j++) {
+				if (1 == Pos[i][j]->GetStatus()) BTN[XYtoBid(i, j)].SetState(1);
+			}
+		}
+		Sleep(1000);
+	} while (iftype);
+}
+
+void CGame::Clear() {
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
+			if (1 == Pos[i][j]->GetStatus()) {
+				ClearELM(i, j);
+			}
+		}
+	}
+}
+
+void CGame::ClearType2(int x, int y) {
+	Pos[x][y]->SetType(1);
+	for (int j = 1; j <= 9; j++) {
+		if (0 == Pos[x][j]->GetStatus()) Pos[x][j]->SetStatus(1);
+	}
+}
+
+void CGame::ClearType3(int x, int y) {
+	Pos[x][y]->SetType(1);
+	for (int i = 1; i <= 9; i++) {
+		if (0 == Pos[i][y]->GetStatus()) Pos[i][y]->SetStatus(1);
+	}
+}
+
+void CGame::ClearType4(int x, int y) {
+	Pos[x][y]->SetType(1);
+	if (y - 2 >= 1) if (0 == Pos[x][y - 2]->GetStatus()) Pos[x][y - 2]->SetStatus(1);
+	if (y - 1 >= 1) {
+		if (x - 1 >= 1) if (0 == Pos[x - 1][y - 1]->GetStatus()) Pos[x - 1][y - 1]->SetStatus(1);
+		if (0 == Pos[x][y - 1]->GetStatus()) Pos[x][y - 1]->SetStatus(1);
+		if (x + 1 <= 9) if (0 == Pos[x + 1][y - 1]->GetStatus()) Pos[x + 1][y - 1]->SetStatus(1);
+	}
+	if (x - 1 >= 1) {
+		if (0 == Pos[x - 1][y]->GetStatus()) Pos[x - 1][y]->SetStatus(1);
+		if (x - 2 >= 1) if (0 == Pos[x - 2][y]->GetStatus()) Pos[x - 2][y]->SetStatus(1);
+	}
+	if (x + 1 <= 9) {
+		if (0 == Pos[x + 1][y]->GetStatus()) Pos[x + 1][y]->SetStatus(1);
+		if (x + 2 <= 9) if (0 == Pos[x + 2][y]->GetStatus()) Pos[x + 2][y]->SetStatus(1);
+	}
+	if (y + 1 <= 9) {
+		if (x - 1 >= 1) if (0 == Pos[x - 1][y + 1]->GetStatus()) Pos[x - 1][y + 1]->SetStatus(1);
+		if (0 == Pos[x][y + 1]->GetStatus()) Pos[x][y + 1]->SetStatus(1);
+		if (x + 1 <= 9) if (0 == Pos[x + 1][y + 1]->GetStatus()) Pos[x + 1][y + 1]->SetStatus(1);
+	}
+	if (y + 2 >= 1) if (0 == Pos[x][y + 2]->GetStatus()) Pos[x][y + 2]->SetStatus(1);
+}
+
+void CGame::ClearType5(int x, int y) {
+	Pos[x][y]->SetType(1);
+	int Text = Pos[x][y]->GetTextNum();
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
+			if (Text == Pos[i][j]->GetTextNum()) Pos[i][j]->SetStatus(1);
+		}
+	}
+}
+
+void CGame::ResetStatus() {
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
+			if (-1 == Pos[i][j]->GetStatus()) Pos[i][j]->SetStatus(0);
+		}
+	}
 }
