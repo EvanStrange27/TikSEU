@@ -14,6 +14,7 @@
 #define IDD_NAME                        137
 #define IDC_SCROLLBAR1                  1002
 #define IDC_EDIT1                       1003
+#define IDC_HSCROLL_EDIT                1003
 #define Main_Play                       1004
 #define Main_Ranking                    1005
 #define Main_Quit                       1006
