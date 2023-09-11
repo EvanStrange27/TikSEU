@@ -228,13 +228,9 @@ template <int bid> void CGame::OnBnClickedButton()
 	//GetDlgItem(2700 + bid)->SetWindowText();
 
 	//判断已选中两个能否交换
-	if (!AlCh) {
+	if (!AlCh || AlCh==bid) {
 		BTN[bid].SetState(1);
 		AlCh = bid;
-	}
-	else if (AlCh == bid) {
-		BTN[bid].SetState(0);
-		AlCh = 0;
 	}
 	else { 
 		if (JudgeEx(AlCh, bid)) {
