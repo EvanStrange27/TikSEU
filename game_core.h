@@ -11,58 +11,26 @@ class ELM
 {
 private:
 	int Bid;
-	string Text;
+	int ELMText;
 	int X;
 	int Y;
 	int ELMType;
+	int ELMStatus;
 public:
 	ELM() {
 		Bid = 0;
-		Text = "0";
+		ELMText = 1;
 		X = 0;
 		Y = 0;
 		ELMType = 1;
+		ELMStatus = 1;
 	}
 	~ELM() {};
 	void SetBid(int bid);
 	void SetXY(int x,int y);
 	void SetType(int type);
-	void ShowText();	//为与之匹配的按钮显示文本
-};
-
-class GM
-{
-private:
-	ELM* elm;
-	ELM* Pos[10][10];
-	int Score;
-public:
-	GM() {
-		elm = NULL;
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j <= 10; j++) {
-				Pos[i][j] = NULL;
-			}
-		}
-		Score = 0;
-	}
-	~GM() {};
-	ELM* CreateELM();	//创建新元素
-	void GMStart();		//游戏开始
-	/*	游戏开始
-	* 流程
-	* 随机创建81个元素
-	* 按顺序匹配给按钮
-	* 为按钮装载显示名字
-	*/
-	void Load();		//显示名字
-	void Exchange(int x1,int y1,int x2,int y2);	//成功交换两个元素
-	/*	交换元素
-	* 流程
-	* 判断是否含有特效
-	* 判断是否产生新的特效
-	* 调用特定的消除函数
-	*/
-	void ClearELM(int x, int y);	//消除元素
-
+	void SetText(int text);
+	void SetStatus(int sta);
+	CString GetText();	//为与之匹配的按钮提供文本
+	int GetBid();
 };

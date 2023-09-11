@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "game_core.h"
+#include "ctime"
+#include "random"
 using std::string;
 
 void ELM::SetBid(int bid) {
@@ -15,26 +17,26 @@ void ELM::SetType(int type) {
 	ELMType = type;
 }
 
-void ELM::ShowText() {
-
+void ELM::SetText(int text) {
+	ELMText = text;
 }
 
-ELM* GM::CreateELM() {
-	return NULL;
+void ELM::SetStatus(int sta) {
+	ELMStatus = sta;
 }
 
-void GM::GMStart() {
-
+CString ELM::GetText() {
+	CString Text;
+	switch (ELMText) {
+	case 1:Text = "东"; break;
+	case 2:Text = "南"; break;
+	case 3:Text = "西"; break;
+	case 4:Text = "北"; break;
+	case 5:Text = "中"; break;
+	}
+	return Text;
 }
 
-void GM::Load() {
-	
-}
-
-void GM::Exchange(int x1, int y1, int x2, int y2) {
-
-}
-
-void GM::ClearELM(int x, int y) {
-
+int ELM::GetBid() {
+	return Bid;
 }
