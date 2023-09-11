@@ -23,6 +23,8 @@ public:
 	void SetStatus(int sta);
 	void UpdateEid();
 	CString GetText();	//为与之匹配的按钮提供文本
+	int GetType();
+	int GetTextNum();
 };
 
 // CGame 对话框

@@ -228,9 +228,13 @@ template <int bid> void CGame::OnBnClickedButton()
 	//GetDlgItem(2700 + bid)->SetWindowText();
 
 	//判断已选中两个能否交换
-	if (!AlCh || AlCh == bid) {
+	if (!AlCh) {
 		BTN[bid].SetState(1);
 		AlCh = bid;
+	}
+	else if (AlCh == bid) {
+		BTN[bid].SetState(0);
+		AlCh = 0;
 	}
 	else { 
 		if (JudgeEx(AlCh, bid)) {
@@ -306,6 +310,13 @@ CString ELM::GetText() {
 	return Text;
 }
 
+int ELM::GetType() {
+	return ELMType;
+}
+
+int ELM::GetTextNum() {
+	return ELMText;
+}
 
 ELM* CGame::CreateELM(int text, int type) {
 	if (!text) {
@@ -367,7 +378,15 @@ void CGame::Fall() {
 }
 
 void CGame::Judge(bool ifstart) {
+	int Text;
 
+	//先横向找
+	for (int i = 9; i >= 1; i--) {
+		for (int j = 1; j <= 7; j++) {
+
+		}
+	}
+	//再纵向找
 }
 
 int CGame::BidtoX(int bid) {
@@ -387,5 +406,6 @@ bool CGame::JudgeEx(int bid1, int bid2) {
 	if ((BidtoX(bid1) == BidtoX(bid2)) && ((abs(BidtoY(bid1) - BidtoY(bid2)) == 1))) return 1;
 	if ((BidtoY(bid1) == BidtoY(bid2)) && ((abs(BidtoX(bid1) - BidtoX(bid2)) == 1))) return 1;
 	// TODO 此处还须添加寻找特效
+	if (Pos[BidtoX(bid1)][BidtoY(bid1)]->GetType() == 5 || Pos[BidtoX(bid2)][BidtoY(bid2)]->GetType() == 5) return 1;
 	return 0;
 }
