@@ -454,7 +454,7 @@ void CGame::Exchange(int x1, int y1, int x2, int y2) {
 			X2 = x2;
 			Y2 = y2;
 		}
-		if (2 == Pos[X1][Y1]->GetType()) {
+		if (3 == Pos[X1][Y1]->GetType()) {
 			for (int j = Y2 - 2; j <= Y2 + 2; j++) {
 				for (int i = 1; i <= 9; i++) {
 					if (j >= 1 && j <= 9) {
