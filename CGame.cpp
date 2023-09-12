@@ -8,6 +8,7 @@
 #include "ctime"
 #include "random"
 #include "string"
+#include "cmath"
 using std::string;
 int ELM::count = 0;
 bool ifstart;
@@ -359,23 +360,125 @@ void CGame::Exchange(int x1, int y1, int x2, int y2) {
 	Pos[x1][y1]->UpdateEid();
 	Pos[x2][y2]->UpdateEid();
 	Load();
-	if (5 == Pos[x1][y1]->GetType() && 5 == Pos[x1][y1]->GetType()) {
-
-	}
-	else if (5 == Pos[x1][y1]->GetType()) {
-
-	}
-	else if (5 == Pos[x2][y2]->GetType()) {
-
-	}
-	else {
-		if (Judge()) {
-			
-		}
-		else {
+	int ChangeType = std::pow(Pos[x1][y1]->GetType(), 2) + std::pow(Pos[x2][y2]->GetType(), 2);
+	switch (ChangeType) {
+	case 2: case 5: case 10: case 17: { //普通交换
+		if (!Judge()) {
 			std::swap(Pos[x1][y1], Pos[x2][y2]);
 			Load();
 		}
+	}
+		  break;
+	case 50: { //双寻找交换
+		for (int i = 1; i <= 9; i++) {
+			for (int j = 1; j <= 9; j++) {
+				if (1 != Pos[i][j]->GetType()) {
+					Pos[i][j]->SetStatus(1);
+				}
+			}
+		}
+		Pos[x1][y1]->SetStatus(1);
+		Pos[x2][y2]->SetStatus(1);
+		Pos[x1][y1]->SetType(1);
+		Pos[x2][y2]->SetType(1);
+		while(Judge());
+		for (int i = 1; i <= 9; i++) {
+			for (int j = 1; j <= 9; j++) {
+				Pos[i][j]->SetStatus(1);
+			}
+		}
+		Judge();
+	}
+		   break;
+	case 26: { //单寻找交换
+		int Text = 0;
+		if (5 == Pos[x1][y1]->GetType()) Text = Pos[x2][y2]->GetTextNum();
+		else Text = Pos[x1][y1]->GetTextNum();
+		for (int i = 1; i <= 9; i++) {
+			for (int j = 1; j <= 9; j++) {
+				if (Text == Pos[i][j]->GetTextNum()) {
+					Pos[i][j]->SetStatus(1);
+				}
+			}
+		}
+		Pos[x1][y1]->SetStatus(1);
+		Pos[x2][y2]->SetStatus(1);
+		Pos[x1][y1]->SetType(1);
+		Pos[x2][y2]->SetType(1);
+		Judge();
+	}
+		   break;
+	case 29: case 34: case 41: { //寻找特效交换
+		int Text = 0;
+		int Type = 0;
+		if (5 == Pos[x1][y1]->GetType()) {
+			Text = Pos[x2][y2]->GetTextNum();
+			Type = Pos[x2][y2]->GetType();
+		}
+		else {
+			Text = Pos[x1][y1]->GetTextNum();
+			Type = Pos[x1][y1]->GetType();
+		}
+		for (int i = 1; i <= 9; i++) {
+			for (int j = 1; j <= 9; j++) {
+				if (Text == Pos[i][j]->GetTextNum()) {
+					Pos[i][j]->SetType(Type);
+					Pos[i][j]->SetStatus(1);
+				}
+			}
+		}
+		Pos[x1][y1]->SetStatus(1);
+		Pos[x2][y2]->SetStatus(1);
+		Pos[x1][y1]->SetType(1);
+		Pos[x2][y2]->SetType(1);
+		Judge();
+	}
+		   break;
+	case 8: case 13: case 18: { //横纵特效交换
+		Pos[x1][y1]->SetStatus(1);
+		Pos[x2][y2]->SetStatus(1);
+		Judge();
+	}
+		   break;
+	case 32: case 20: case 25: { //爆炸横纵交换
+		int X1 = 0, Y1 = 0, X2 = 0, Y2 = 0; //第1组为横纵特效，第二组为爆炸特效
+		if (4 == Pos[x1][y1]->GetType()) {
+			X1 = x2;
+			Y1 = y2;
+			X2 = x1;
+			Y2 = y1;
+		}
+		else {
+			X1 = x1;
+			Y1 = y1;
+			X2 = x2;
+			Y2 = y2;
+		}
+		if (2 == Pos[X1][Y1]->GetType()) {
+			for (int j = Y2 - 2; j <= Y2 + 2; j++) {
+				for (int i = 1; i <= 9; i++) {
+					if (j >= 1 && j <= 9) {
+						Pos[i][j]->SetStatus(1);
+					}
+				}
+			}
+		}
+		else {
+			for (int i = X2 - 2; i <= X2 + 2; i++) {
+				for (int j = 1; j <= 9; j++) {
+					if (i >= 1 && i <= 9) {
+						Pos[i][j]->SetStatus(1);
+					}
+				}
+			}
+		}
+		Pos[x1][y1]->SetStatus(1);
+		Pos[x2][y2]->SetStatus(1);
+		Pos[x1][y1]->SetType(1);
+		Pos[x2][y2]->SetType(1);
+		Judge();
+	}
+		   break;
 	}
 }
 
