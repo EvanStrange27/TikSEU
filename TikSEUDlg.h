@@ -6,7 +6,6 @@
 #include "DIALOG1.h"
 #include "CGame.h"
 
-
 // CTikSEUDlg 对话框
 class CTikSEUDlg : public CDialogEx
 {
@@ -39,4 +38,6 @@ public:
 	DIALOG1 Win_Setting;
 	afx_msg void OnBnClickedQuit();
 	afx_msg void OnBnClickedPlay();
+	DIALOG1* m_pTipDlg = NULL;
+	CGame* m_pTipDlg1 = NULL;
 };

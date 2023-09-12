@@ -93,9 +93,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>winmm.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -184,16 +186,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CGame.h" />
+    <ClInclude Include="CNAME.h" />
+    <ClInclude Include="COwerButton.h" />
     <ClInclude Include="DIALOG1.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SetWinSound.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TikSEU.h" />
     <ClInclude Include="TikSEUDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CGame.cpp" />
+    <ClCompile Include="CNAME.cpp" />
+    <ClCompile Include="COwerButton.cpp" />
     <ClCompile Include="DIALOG1.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -212,7 +219,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TikSEU.ico" />
-    <Image Include="素材\元素\1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\dingdong.WAV" />
+    <Media Include="res\Ending.WAV" />
+    <Media Include="res\GameOn.WAV" />
+    <Media Include="res\GameStart.WAV" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
