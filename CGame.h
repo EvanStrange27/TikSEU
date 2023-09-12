@@ -62,8 +62,13 @@ public:
 	ELM* elm;
 	ELM* Pos[10][10];
 	int Score;
+	CString ScoreStr;
 	int StepValue;
 	CString StepStr;
+	int GoalEast;
+	int GoalSouth;
+	CString GoalStr1;
+	CString GoalStr2;
 	ELM* CreateELM(int text = 0, int type = 1);
 	/*	游戏开始
 	* 流程
@@ -119,4 +124,11 @@ public:
 	void ResetStatus();
 	CStatic Step;
 	void DecStep();
+	void AddStep();
+	CStatic ScoreStatic;
+	CStatic Goal1;
+	CStatic Goal2;
+	CStatic GoalName1;
+	CStatic GoalName2;
+	void QuitGame(int outway);
 };

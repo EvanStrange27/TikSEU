@@ -22,6 +22,17 @@
 #define IDC_MFCCOLORBUTTON1             1007
 #define IDC_STATIC1                     1008
 #define IDC_STATIC2                     1009
+#define IDC_STATIC3                     1010
+#define IDC_STATIC4                     1011
+#define IDC_STATIC5                     1012
+#define IDC_STATIC6                     1013
+#define IDC_STATIC7                     1014
+#define IDC_STATIC8                     1015
+#define IDC_STATIC9                     1016
+#define IDC_STATIC10                    1017
+#define IDC_STATIC11                    1018
+#define IDC_STATIC12                    1019
+#define IDC_STATIC13                    1020
 #define IDC_BUTTON1                     2701
 #define IDC_BUTTON2                     2702
 #define IDC_BUTTON3                     2703

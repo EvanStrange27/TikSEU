@@ -130,6 +130,11 @@ void CGame::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON80, BTN[80]);
 	DDX_Control(pDX, IDC_BUTTON81, BTN[81]);
 	DDX_Control(pDX, IDC_STATIC2, Step);
+	DDX_Control(pDX, IDC_STATIC4, ScoreStatic);
+	DDX_Control(pDX, IDC_STATIC7, Goal1);
+	DDX_Control(pDX, IDC_STATIC11, Goal2);
+	DDX_Control(pDX, IDC_STATIC9, GoalName1);
+	DDX_Control(pDX, IDC_STATIC13, GoalName2);
 }
 
 
@@ -268,13 +273,28 @@ BOOL CGame::OnInitDialog()
 	// TODO:  在此添加额外的初始化
 	PlaySound(_T("./res/GameOn.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	StepValue = 27;
+	GoalEast = 60;
+	GoalSouth = 61;
 	StepStr.Format(L"%d", StepValue);
 	FontStep.CreatePointFont(300, L"黑体", NULL);//参数：字体大小，样式，DC
 	FontELM.CreatePointFont(150, L"黑体", NULL);
 	Step.SetFont(&FontStep, true);
+	Goal1.SetFont(&FontStep, true);
+	Goal2.SetFont(&FontStep, true);
+	GoalName1.SetFont(&FontELM, true);
+	GoalName2.SetFont(&FontELM, true);
 	Step.SetWindowText(StepStr);
+	GoalStr1.Format(L"%d", GoalEast);
+	GoalStr2.Format(L"%d", GoalSouth);
+	Goal1.SetWindowText(GoalStr1);
+	Goal2.SetWindowText(GoalStr2);
 	dre.seed(time(0));
 	GMStart();
+	Score = 0;
+	ScoreStr.Format(L"%d", Score);
+	ScoreStatic.SetFont(&FontStep, true);
+	ScoreStatic.SetWindowText(ScoreStr);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -360,6 +380,12 @@ void CGame::Load() {
 		for (int j = 1; j <= 9; j++) {
 			BTN[XYtoBid(i, j)].SetState(0);
 			BTN[XYtoBid(i, j)].SetFont(&FontELM, true);
+			ScoreStr.Format(L"%d", Score);
+			ScoreStatic.SetWindowText(ScoreStr);
+			GoalStr1.Format(L"%d", GoalEast);
+			GoalStr2.Format(L"%d", GoalSouth);
+			Goal1.SetWindowText(GoalStr1);
+			Goal2.SetWindowText(GoalStr2);
 			if(Pos[i][j]) GetDlgItem(2700 + XYtoBid(i, j))->SetWindowText(Pos[i][j]->GetText());
 			else GetDlgItem(2700 + XYtoBid(i, j))->SetWindowText(L"");
 		}
@@ -372,16 +398,19 @@ void CGame::Exchange(int x1, int y1, int x2, int y2) {
 	Pos[x1][y1]->UpdateEid();
 	Pos[x2][y2]->UpdateEid();
 	Load();
+	DecStep();
 	int ChangeType = std::pow(Pos[x1][y1]->GetType(), 2) + std::pow(Pos[x2][y2]->GetType(), 2);
 	switch (ChangeType) {
 	case 2: case 5: case 10: case 17: { //普通交换
 		if (!Judge()) {
 			std::swap(Pos[x1][y1], Pos[x2][y2]);
 			Load();
+			AddStep();
+			return;
 		}
 	}
 		  break;
-	case 50: { //双寻找交换
+	case 50: case 32: { //双寻找交换
 		for (int i = 1; i <= 9; i++) {
 			for (int j = 1; j <= 9; j++) {
 				if (1 != Pos[i][j]->GetType()) {
@@ -399,7 +428,7 @@ void CGame::Exchange(int x1, int y1, int x2, int y2) {
 				Pos[i][j]->SetStatus(1);
 			}
 		}
-		Judge();
+		while(Judge());
 	}
 		   break;
 	case 26: { //单寻找交换
@@ -417,7 +446,7 @@ void CGame::Exchange(int x1, int y1, int x2, int y2) {
 		Pos[x2][y2]->SetStatus(1);
 		Pos[x1][y1]->SetType(1);
 		Pos[x2][y2]->SetType(1);
-		Judge();
+		while(Judge());
 	}
 		   break;
 	case 29: case 34: case 41: { //寻找特效交换
@@ -443,16 +472,16 @@ void CGame::Exchange(int x1, int y1, int x2, int y2) {
 		Pos[x2][y2]->SetStatus(1);
 		Pos[x1][y1]->SetType(1);
 		Pos[x2][y2]->SetType(1);
-		Judge();
+		while(Judge());
 	}
 		   break;
 	case 8: case 13: case 18: { //横纵特效交换
 		Pos[x1][y1]->SetStatus(1);
 		Pos[x2][y2]->SetStatus(1);
-		Judge();
+		while(Judge());
 	}
 		   break;
-	case 32: case 20: case 25: { //爆炸横纵交换
+	case 20: case 25: { //爆炸横纵交换
 		int X1 = 0, Y1 = 0, X2 = 0, Y2 = 0; //第1组为横纵特效，第二组为爆炸特效
 		if (4 == Pos[x1][y1]->GetType()) {
 			X1 = x2;
@@ -488,13 +517,21 @@ void CGame::Exchange(int x1, int y1, int x2, int y2) {
 		Pos[x2][y2]->SetStatus(1);
 		Pos[x1][y1]->SetType(1);
 		Pos[x2][y2]->SetType(1);
-		Judge();
+		while(Judge());
 	}
 		   break;
 	}
+	if (!StepValue) QuitGame(1);
 }
 
 void CGame::ClearELM(int x, int y) {
+	if (!ifstart) {
+		Score += 10;
+		if (1 == Pos[x][y]->GetTextNum()) 
+			if(GoalEast) GoalEast--;
+		if (2 == Pos[x][y]->GetTextNum()) 
+			if(GoalSouth) GoalSouth--;
+	}
 	delete Pos[x][y];
 	Pos[x][y] = NULL;
 }
@@ -752,6 +789,17 @@ void CGame::ResetStatus() {
 }
 
 void CGame::DecStep() {
-
+	if(StepValue) StepValue--;
+	StepStr.Format(L"%d", StepValue);
+	Step.SetWindowText(StepStr);
 }
 
+void CGame::AddStep() {
+	StepValue++;
+	StepStr.Format(L"%d", StepValue);
+	Step.SetWindowText(StepStr);
+}
+
+void CGame::QuitGame(int outway) {
+
+}
