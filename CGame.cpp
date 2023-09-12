@@ -742,6 +742,6 @@ void CGame::ResetStatus() {
 		}
 	}
 }
-}
+
 
 
