@@ -45,7 +45,7 @@ void CGame::DoDataExchange(CDataExchange* pDX)
 	//逐个绑定按钮
 	/*
 	for (int i = 1; i <= 81; i++) {
-		DDX_Control(pDX, 999+i, BTN[i]);
+	DDX_Control(pDX, 999+i, BTN[i]);
 	}
 	*/
 	DDX_Control(pDX, IDC_BUTTON1, BTN[1]);
@@ -129,6 +129,7 @@ void CGame::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON79, BTN[79]);
 	DDX_Control(pDX, IDC_BUTTON80, BTN[80]);
 	DDX_Control(pDX, IDC_BUTTON81, BTN[81]);
+	DDX_Control(pDX, IDC_STATIC2, Step);
 }
 
 
@@ -266,6 +267,12 @@ BOOL CGame::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 	PlaySound(_T("./res/GameOn.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	StepValue = 27;
+	StepStr.Format(L"%d", StepValue);
+	FontStep.CreatePointFont(300, L"黑体", NULL);//参数：字体大小，样式，DC
+	FontELM.CreatePointFont(150, L"黑体", NULL);
+	Step.SetFont(&FontStep, true);
+	Step.SetWindowText(StepStr);
 	dre.seed(time(0));
 	GMStart();
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -352,6 +359,7 @@ void CGame::Load() {
 	for (int i = 1; i <= 9; i++) {
 		for (int j = 1; j <= 9; j++) {
 			BTN[XYtoBid(i, j)].SetState(0);
+			BTN[XYtoBid(i, j)].SetFont(&FontELM, true);
 			if(Pos[i][j]) GetDlgItem(2700 + XYtoBid(i, j))->SetWindowText(Pos[i][j]->GetText());
 			else GetDlgItem(2700 + XYtoBid(i, j))->SetWindowText(L"");
 		}
@@ -458,7 +466,7 @@ void CGame::Exchange(int x1, int y1, int x2, int y2) {
 			X2 = x2;
 			Y2 = y2;
 		}
-		if (2 == Pos[X1][Y1]->GetType()) {
+		if (3 == Pos[X1][Y1]->GetType()) {
 			for (int j = Y2 - 2; j <= Y2 + 2; j++) {
 				for (int i = 1; i <= 9; i++) {
 					if (j >= 1 && j <= 9) {
@@ -743,5 +751,7 @@ void CGame::ResetStatus() {
 	}
 }
 
+void CGame::DecStep() {
 
+}
 
