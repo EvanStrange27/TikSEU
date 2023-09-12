@@ -34,6 +34,8 @@ public:
 class CGame : public CDialogEx
 {
 	DECLARE_DYNAMIC(CGame)
+	CFont FontStep;
+	CFont FontELM;
 
 public:
 	CGame(CWnd* pParent = nullptr);   // 标准构造函数
@@ -60,6 +62,8 @@ public:
 	ELM* elm;
 	ELM* Pos[10][10];
 	int Score;
+	int StepValue;
+	CString StepStr;
 	ELM* CreateELM(int text = 0, int type = 1);
 	/*	游戏开始
 	* 流程
@@ -113,4 +117,6 @@ public:
 	void Clear();
 	//重置状态
 	void ResetStatus();
+	CStatic Step;
+	void DecStep();
 };
