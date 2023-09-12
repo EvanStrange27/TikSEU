@@ -42,6 +42,9 @@
     <ClInclude Include="CNAME.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="COwerButton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TikSEU.cpp">
@@ -62,6 +65,9 @@
     <ClCompile Include="CNAME.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="COwerButton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TikSEU.rc">
@@ -77,8 +83,19 @@
     <Image Include="res\TikSEU.ico">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="素材\元素\1.bmp">
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\dingdong.WAV">
       <Filter>资源文件</Filter>
-    </Image>
+    </Media>
+    <Media Include="res\Ending.WAV">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="res\GameOn.WAV">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="res\GameStart.WAV">
+      <Filter>资源文件</Filter>
+    </Media>
   </ItemGroup>
 </Project>

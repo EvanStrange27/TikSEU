@@ -20,7 +20,7 @@ CNAME::CNAME(CWnd* pParent /*=nullptr*/)
 
 CNAME::~CNAME()
 {
-	PlaySound(_T("E:\\Users\\tik\\res\\GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	PlaySound(_T("./res/GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 }
 
 void CNAME::DoDataExchange(CDataExchange* pDX)
@@ -41,7 +41,7 @@ BOOL CNAME::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	PlaySound(_T("E:\\Users\\tik\\res\\Ending.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(_T("./res/Ending.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }

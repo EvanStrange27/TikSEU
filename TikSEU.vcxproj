@@ -217,6 +217,12 @@
   <ItemGroup>
     <Image Include="res\TikSEU.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\dingdong.WAV" />
+    <Media Include="res\Ending.WAV" />
+    <Media Include="res\GameOn.WAV" />
+    <Media Include="res\GameStart.WAV" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

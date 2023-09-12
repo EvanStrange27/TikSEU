@@ -35,7 +35,7 @@ CGame::CGame(CWnd* pParent /*=nullptr*/)
 
 CGame::~CGame()
 {
-	PlaySound(_T("E:\\Users\\tik\\res\\GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(_T("./res/GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
 void CGame::DoDataExchange(CDataExchange* pDX)
@@ -265,7 +265,7 @@ BOOL CGame::OnInitDialog()
 	//Game_cwnd = this;
 
 	// TODO:  在此添加额外的初始化
-	PlaySound(_T("E:\\Users\\tik\\res\\GameOn.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	PlaySound(_T("./res/GameOn.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	dre.seed(time(0));
 	GMStart();
 	return TRUE;  // return TRUE unless you set the focus to a control
