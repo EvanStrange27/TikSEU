@@ -8,6 +8,8 @@
 #include "ctime"
 #include "random"
 #include "string"
+#include <mmsystem.h>
+#pragma comment(lib,"winmm.lib")
 using std::string;
 int ELM::count = 0;
 std::default_random_engine dre;					// 产生随机非负数
@@ -31,6 +33,7 @@ CGame::CGame(CWnd* pParent /*=nullptr*/)
 
 CGame::~CGame()
 {
+	PlaySound(_T("E:\\Users\\tik\\res\\GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
 void CGame::DoDataExchange(CDataExchange* pDX)
@@ -263,6 +266,7 @@ BOOL CGame::OnInitDialog()
 	//Game_cwnd = this;
 	
 	// TODO:  在此添加额外的初始化
+	PlaySound(_T("E:\\Users\\tik\\res\\GameOn.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	dre.seed(time(0));
 	GMStart();
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -405,3 +409,5 @@ bool CGame::JudgeEx(int bid1, int bid2) {
 	if (Pos[BidtoX(bid1)][BidtoY(bid1)]->GetType() == 5 || Pos[BidtoX(bid2)][BidtoY(bid2)]->GetType() == 5) return 1;
 	return 0;
 }
+
+

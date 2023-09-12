@@ -7,7 +7,6 @@
 #include "DIALOG1.h"
 #include "CNAME.h"
 
-
 // DIALOG1 对话框
 
 IMPLEMENT_DYNAMIC(DIALOG1, CDialogEx)
@@ -79,7 +78,6 @@ BOOL DIALOG1::OnInitDialog()
 
 		m_horiScrollbar.SetScrollRange(0, 100);
 		m_horiScrollbar.SetScrollPos(20);
-
 		// TODO: 在此添加额外的初始化代码
 
 		return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE

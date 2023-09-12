@@ -6,7 +6,6 @@
 #include "DIALOG1.h"
 #include "CGame.h"
 
-
 // CTikSEUDlg 对话框
 class CTikSEUDlg : public CDialogEx
 {

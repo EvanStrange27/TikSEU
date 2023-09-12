@@ -7,8 +7,8 @@
 #include "TikSEU.h"
 #include "TikSEUDlg.h"
 #include "afxdialogex.h"
-
-
+#include <mmsystem.h>
+#pragma comment(lib,"winmm.lib")
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -30,7 +30,6 @@ public:
 
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
-
 // 实现
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -107,7 +106,7 @@ BOOL CTikSEUDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-	
+	PlaySound(_T("E:\\Users\\tik\\res\\GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
