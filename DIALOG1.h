@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "afxdialogex.h"
-
+#include "mmsystem.h"
 
 // DIALOG1 对话框
 
@@ -11,7 +11,17 @@ class DIALOG1 : public CDialogEx
 public:
 	DIALOG1(CWnd* pParent = nullptr);   // 标准构造函数
 	virtual ~DIALOG1();
+	MIXERCONTROLDETAILS_SIGNED volStruct;
 
+	MIXERCONTROLDETAILS mxcd;
+
+	MIXERLINECONTROLS mxlc;
+
+	MIXERLINE mxl;
+
+	MIXERCONTROL mxc;
+
+	HMIXER m_hmx;
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG1 };
