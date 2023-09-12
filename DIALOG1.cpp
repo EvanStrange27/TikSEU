@@ -6,7 +6,8 @@
 #include "afxdialogex.h"
 #include "DIALOG1.h"
 #include "CNAME.h"
-
+#include "SetWinSound.h"
+#
 // DIALOG1 对话框
 
 IMPLEMENT_DYNAMIC(DIALOG1, CDialogEx)
@@ -78,8 +79,9 @@ BOOL DIALOG1::OnInitDialog()
 
 		m_horiScrollbar.SetScrollRange(0, 100);
 		m_horiScrollbar.SetScrollPos(20);
-		// TODO: 在此添加额外的初始化代码
-
+		// TODO: 在此添加额外的初始化代码*/
+	
+		
 		return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 	}
 
@@ -127,6 +129,9 @@ void DIALOG1::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	}
 	// 设置滚动块位置
 	m_horiScrollbar.SetScrollPos(pos);
+
+	SetVolum(pos);
+	
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
@@ -141,6 +146,7 @@ void DIALOG1::OnEnChangeHscrollEdit()
 	UpdateData(TRUE);
 	if (m_HscrollEdit > 100|| m_HscrollEdit<0)m_HscrollEdit = 0;//如果输入的音量值不合要求则重新归0；
 	m_horiScrollbar.SetScrollPos(m_HscrollEdit);//设置滚动条；
+	SetVolum(m_HscrollEdit);
 	UpdateData(FALSE);
 	// TODO:  在此添加控件通知处理程序代码
 }
