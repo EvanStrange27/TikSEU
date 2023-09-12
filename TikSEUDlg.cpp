@@ -13,9 +13,6 @@
 #define new DEBUG_NEW
 #endif
 
-DIALOG1* m_pTipDlg = NULL;
-CGame* m_pTipDlg1 = NULL;
-
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
 class CAboutDlg : public CDialogEx
@@ -198,8 +195,6 @@ void CTikSEUDlg::OnBnClickedPlay()
 	}
 	// 显示非模态对话框   
 	m_pTipDlg1->ShowWindow(SW_SHOW);
-
-	// 将各控件中的数据保存到相应的变量   
-	UpdateData(TRUE);
-	UpdateData(FALSE);
+	
 }
+

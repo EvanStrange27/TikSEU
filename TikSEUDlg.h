@@ -38,4 +38,6 @@ public:
 	DIALOG1 Win_Setting;
 	afx_msg void OnBnClickedQuit();
 	afx_msg void OnBnClickedPlay();
+	DIALOG1* m_pTipDlg = NULL;
+	CGame* m_pTipDlg1 = NULL;
 };

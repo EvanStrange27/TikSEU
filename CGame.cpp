@@ -3,6 +3,7 @@
 
 #include "pch.h"
 #include "TikSEU.h"
+#include "TikSEUDlg.h"
 #include "afxdialogex.h"
 #include "CGame.h"
 #include "ctime"
@@ -35,7 +36,7 @@ CGame::CGame(CWnd* pParent /*=nullptr*/)
 
 CGame::~CGame()
 {
-	PlaySound(_T("./res/GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(_T("./res/GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 }
 
 void CGame::DoDataExchange(CDataExchange* pDX)
@@ -220,6 +221,7 @@ BEGIN_MESSAGE_MAP(CGame, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON79, &CGame::OnBnClickedButton<79>)
 	ON_BN_CLICKED(IDC_BUTTON80, &CGame::OnBnClickedButton<80>)
 	ON_BN_CLICKED(IDC_BUTTON81, &CGame::OnBnClickedButton<81>)
+	ON_BN_CLICKED(IDC_BUTTON82, &CGame::OnBnClickedButton82)
 END_MESSAGE_MAP()
 
 
@@ -251,15 +253,14 @@ template <int bid> void CGame::OnBnClickedButton()
 		}
 		else {
 			BTN[bid].SetState(1);
-			Sleep(1000);
+			Sleep(500);
 			BTN[AlCh].SetState(0);
 			BTN[bid].SetState(0);
 			AlCh = 0;
 		}
 	}
-
-
-	//BTN[bid].SetFont();
+	if (!StepValue) QuitGame(1);
+	if (!GoalEast && !GoalSouth) QuitGame(2);
 }
 
 
@@ -273,8 +274,8 @@ BOOL CGame::OnInitDialog()
 	// TODO:  在此添加额外的初始化
 	PlaySound(_T("./res/GameOn.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	StepValue = 27;
-	GoalEast = 60;
-	GoalSouth = 61;
+	GoalEast = 3;
+	GoalSouth = 3;
 	StepStr.Format(L"%d", StepValue);
 	FontStep.CreatePointFont(300, L"黑体", NULL);//参数：字体大小，样式，DC
 	FontELM.CreatePointFont(150, L"黑体", NULL);
@@ -379,7 +380,7 @@ void CGame::Load() {
 	for (int i = 1; i <= 9; i++) {
 		for (int j = 1; j <= 9; j++) {
 			BTN[XYtoBid(i, j)].SetState(0);
-			BTN[XYtoBid(i, j)].SetFont(&FontELM, true);
+			if(ifstart) BTN[XYtoBid(i, j)].SetFont(&FontELM, true);
 			ScoreStr.Format(L"%d", Score);
 			ScoreStatic.SetWindowText(ScoreStr);
 			GoalStr1.Format(L"%d", GoalEast);
@@ -521,7 +522,6 @@ void CGame::Exchange(int x1, int y1, int x2, int y2) {
 	}
 		   break;
 	}
-	if (!StepValue) QuitGame(1);
 }
 
 void CGame::ClearELM(int x, int y) {
@@ -650,7 +650,7 @@ bool CGame::Judge() {
 		FindTypeClear();
 	Clear();
 	Load();
-	if(!ifstart) 
+	if(!ifstart && ifJudge)
 		Sleep(500);
 	//下落
 	Fall();
@@ -658,7 +658,7 @@ bool CGame::Judge() {
 	//重置状态
 	ResetStatus();
 	Load();
-	if (!ifstart)
+	if (!ifstart && ifJudge)
 		Sleep(500);
 
 	if (ifJudge) 
@@ -801,5 +801,33 @@ void CGame::AddStep() {
 }
 
 void CGame::QuitGame(int outway) {
+	switch(outway) {
+	case 1:break;	//步数耗尽或点击退出
+	case 2: {		//达成目标，计算剩余分数
+		Score += StepValue * 90;
+		StepValue = 0;
+	}
+		break; 
+	}
+	
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
+			if(Pos[i][j]) delete Pos[i][j];
+			Pos[i][j] = NULL;
+		}
+	}
+	elm = NULL;
+	Load();
+	Sleep(3000);
 
+	CTikSEUDlg* pMain = (CTikSEUDlg*)AfxGetMainWnd();
+	pMain->m_pTipDlg1 = NULL;
+	delete this;
+}
+
+
+void CGame::OnBnClickedButton82()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	QuitGame(1);
 }

@@ -33,6 +33,7 @@
 #define IDC_STATIC11                    1018
 #define IDC_STATIC12                    1019
 #define IDC_STATIC13                    1020
+#define IDC_BUTTON82                    1021
 #define IDC_BUTTON1                     2701
 #define IDC_BUTTON2                     2702
 #define IDC_BUTTON3                     2703
@@ -121,7 +122,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        141
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1010
+#define _APS_NEXT_CONTROL_VALUE         1022
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

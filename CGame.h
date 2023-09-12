@@ -131,4 +131,5 @@ public:
 	CStatic GoalName1;
 	CStatic GoalName2;
 	void QuitGame(int outway);
+	afx_msg void OnBnClickedButton82();
 };
