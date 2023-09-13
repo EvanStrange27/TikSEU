@@ -43,4 +43,6 @@ public:
 	CGame* m_pTipDlg1 = NULL;
 	CRank* m_pTipDlg2 = NULL;
 	afx_msg void OnBnClickedRanking();
+	CStatic Pic;
+	void ShowImg(CString path, INT control_id);
 };

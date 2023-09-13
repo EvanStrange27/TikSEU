@@ -15,6 +15,9 @@
 #define IDD_DIALOG3                     141
 #define Rank                            141
 #define IDD_Save                        143
+#define IDB_PNG1                        145
+#define IDB_BITMAP2                     146
+#define IDB_BITMAP3                     147
 #define IDC_SCROLLBAR1                  1002
 #define IDC_HORI_SCROLLBAR              1002
 #define IDC_EDIT1                       1003
@@ -40,6 +43,7 @@
 #define IDC_BUTTON82                    1021
 #define IDC_LIST1                       1022
 #define IDC_SaveScore                   1023
+#define IDC_PIC                         1024
 #define IDC_BUTTON1                     2701
 #define IDC_BUTTON2                     2702
 #define IDC_BUTTON3                     2703
@@ -126,9 +130,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        145
+#define _APS_NEXT_RESOURCE_VALUE        148
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1024
+#define _APS_NEXT_CONTROL_VALUE         1025
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

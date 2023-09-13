@@ -8,6 +8,7 @@
 #include "TikSEUDlg.h"
 #include "afxdialogex.h"
 #include <mmsystem.h>
+#include "atlimage.h"
 #pragma comment(lib,"winmm.lib")
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -59,6 +60,7 @@ void CTikSEUDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_BUTTON1, Main_Btm_Setting);
+	DDX_Control(pDX, IDC_PIC, Pic);
 }
 
 BEGIN_MESSAGE_MAP(CTikSEUDlg, CDialogEx)
@@ -105,6 +107,9 @@ BOOL CTikSEUDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
 	PlaySound(_T("./res/GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+
+	//ShowImg(L"./res/backround.bmp", IDC_PIC);
+
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -208,4 +213,29 @@ void CTikSEUDlg::OnBnClickedRanking()
 	}
 	// 显示非模态对话框   
 	m_pTipDlg2->ShowWindow(SW_SHOW);
+}
+
+/******************************************
+参数说明：
+		  CString path //图片路径
+		  INT control_id //picture控件的id
+Tip：使用该函数要修改picture控件id 并且添加变量
+******************************************/
+void CTikSEUDlg::ShowImg(CString path, INT control_id)
+{
+	CImage img;
+	//同一个控件多次加载图片会使程序崩溃，因此需要销毁掉原来的内容
+	if (img!=NULL)
+	{
+		img.Destroy();
+	}
+
+	img.Load(path);//加载图片路径
+	CRect rect;
+	GetDlgItem(control_id)->GetWindowRect(&rect);//将窗口矩形显示到picture上
+
+	CWnd* pCwnd = GetDlgItem(control_id);//获取picture控件窗口的句柄
+	CDC* pDc = pCwnd->GetDC();//获取picture控件句柄 
+	img.Draw(pDc->m_hDC, 0, 0, rect.right - rect.left, rect.bottom - rect.top);//将图片画到picture控件所表示的范围，并且适应控件大小
+	ReleaseDC(pDc);//释放pDc
 }

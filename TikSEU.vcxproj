@@ -230,6 +230,9 @@
     <None Include="res\TikSEU.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\background.bmp" />
+    <Image Include="res\background.png" />
+    <Image Include="res\TikSEU.bmp" />
     <Image Include="res\TikSEU.ico" />
   </ItemGroup>
   <ItemGroup>
