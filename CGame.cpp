@@ -836,11 +836,12 @@ void CGame::QuitGame(int outway) {
 		return;
 	}
 	
-	if (NULL == pMain->m_pTipDlg2) {
-		pMain->m_pTipDlg2 = new CRank(GamerID, Score);
-		pMain->m_pTipDlg2->Create(Rank, pMain);
+	if (NULL != pMain->m_pTipDlg2) {
+		delete pMain->m_pTipDlg2;
+		pMain->m_pTipDlg2 = NULL;
 	}
-
+	pMain->m_pTipDlg2 = new CRank(GamerID, Score);
+	pMain->m_pTipDlg2->Create(Rank, pMain);
 	pMain->m_pTipDlg2->ShowWindow(SW_SHOW);
 	
 	delete this;
