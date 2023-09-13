@@ -30,6 +30,8 @@ public:
 // 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnStnClickedScrollbar1();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -42,6 +44,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_STN_CLICKED(IDC_SCROLLBAR1, &CAboutDlg::OnStnClickedScrollbar1)
 END_MESSAGE_MAP()
 
 
@@ -208,4 +211,10 @@ void CTikSEUDlg::OnBnClickedRanking()
 	}
 	// 显示非模态对话框   
 	m_pTipDlg2->ShowWindow(SW_SHOW);
+}
+
+
+void CAboutDlg::OnStnClickedScrollbar1()
+{
+	// TODO: 在此添加控件通知处理程序代码
 }
