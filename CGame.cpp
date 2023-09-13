@@ -275,8 +275,8 @@ BOOL CGame::OnInitDialog()
 	// TODO:  在此添加额外的初始化
 	PlaySound(_T("./res/GameOn.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	StepValue = 27;
-	GoalEast = 3;
-	GoalSouth = 3;
+	GoalEast = 30;
+	GoalSouth = 30;
 	StepStr.Format(L"%d", StepValue);
 	FontStep.CreatePointFont(300, L"黑体", NULL);//参数：字体大小，样式，DC
 	FontELM.CreatePointFont(150, L"黑体", NULL);
