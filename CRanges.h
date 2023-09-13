@@ -1,6 +1,6 @@
 ﻿// 使用“从类型库添加类”向导创建的计算机生成的 IDispatch 包装类
 
-#import "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE" no_namespace
+//#import "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE" no_namespace
 // CRanges 包装类
 
 class CRanges : public COleDispatchDriver

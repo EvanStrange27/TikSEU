@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(CTikSEUDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CTikSEUDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(Main_Quit, &CTikSEUDlg::OnBnClickedQuit)
 	ON_BN_CLICKED(Main_Play, &CTikSEUDlg::OnBnClickedPlay)
+	ON_BN_CLICKED(Main_Ranking, &CTikSEUDlg::OnBnClickedRanking)
 END_MESSAGE_MAP()
 
 
@@ -170,10 +171,6 @@ void CTikSEUDlg::OnBnClickedButton1()
 	// 显示非模态对话框   
 	m_pTipDlg->ShowWindow(SW_SHOW);
 
-	// 将各控件中的数据保存到相应的变量   
-	UpdateData(TRUE);
-	UpdateData(FALSE);
-
 }
 
 
@@ -198,3 +195,17 @@ void CTikSEUDlg::OnBnClickedPlay()
 	
 }
 
+
+
+void CTikSEUDlg::OnBnClickedRanking()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if (NULL == m_pTipDlg2)
+	{
+		// 创建非模态对话框实例   
+		m_pTipDlg2 = new CRank();
+		m_pTipDlg2->Create(Rank, this);
+	}
+	// 显示非模态对话框   
+	m_pTipDlg2->ShowWindow(SW_SHOW);
+}

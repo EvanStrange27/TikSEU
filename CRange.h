@@ -1,6 +1,6 @@
 ﻿// 使用“从类型库添加类”向导创建的计算机生成的 IDispatch 包装类
 
-#import "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE" no_namespace
+//#import "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE" no_namespace
 // CRange 包装类
 
 class CRange : public COleDispatchDriver
@@ -332,7 +332,7 @@ public:
 		InvokeHelper(0x21f, DISPATCH_PROPERTYGET, VT_DISPATCH, (void*)&result, nullptr);
 		return result;
 	}
-	VARIANT DialogBox()
+	VARIANT _DialogBox()
 	{
 		VARIANT result;
 		InvokeHelper(0xf5, DISPATCH_METHOD, VT_VARIANT, (void*)&result, nullptr);

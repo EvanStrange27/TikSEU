@@ -5,6 +5,7 @@
 #pragma once
 #include "DIALOG1.h"
 #include "CGame.h"
+#include "CRank.h"
 
 // CTikSEUDlg 对话框
 class CTikSEUDlg : public CDialogEx
@@ -40,4 +41,6 @@ public:
 	afx_msg void OnBnClickedPlay();
 	DIALOG1* m_pTipDlg = NULL;
 	CGame* m_pTipDlg1 = NULL;
+	CRank* m_pTipDlg2 = NULL;
+	afx_msg void OnBnClickedRanking();
 };

@@ -132,4 +132,5 @@ public:
 	CStatic GoalName2;
 	void QuitGame(int outway);
 	afx_msg void OnBnClickedButton82();
+	CString GamerID;
 };

@@ -11,6 +11,7 @@
 #include "string"
 #include "cmath"
 #include <mmsystem.h>
+#include "CSaveDlg.h"
 #pragma comment(lib,"winmm.lib")
 using std::string;
 int ELM::count = 0;
@@ -801,27 +802,47 @@ void CGame::AddStep() {
 }
 
 void CGame::QuitGame(int outway) {
-	switch(outway) {
+	switch (outway) {
 	case 1:break;	//步数耗尽或点击退出
 	case 2: {		//达成目标，计算剩余分数
 		Score += StepValue * 90;
 		StepValue = 0;
 	}
-		break; 
+		  break;
 	}
-	
+
 	for (int i = 1; i <= 9; i++) {
 		for (int j = 1; j <= 9; j++) {
-			if(Pos[i][j]) delete Pos[i][j];
+			if (Pos[i][j]) delete Pos[i][j];
 			Pos[i][j] = NULL;
 		}
 	}
 	elm = NULL;
 	Load();
-	Sleep(3000);
+	//Sleep(3000);
 
 	CTikSEUDlg* pMain = (CTikSEUDlg*)AfxGetMainWnd();
 	pMain->m_pTipDlg1 = NULL;
+
+	INT_PTR nRes; // 用于保存 DoModal 函数的返回值
+	CSaveDlg tipDlg; // 构造对话框类 CTipDlg 的实例
+	tipDlg.Score = Score;
+	tipDlg.parent = this;
+	
+
+	nRes = tipDlg.DoModal(); // 弹出对话框
+	if (IDCANCEL == nRes) { // 判断对话框退出后返回值是否为 IDCANCEL，如果是则return，否则继续向下执行 
+		delete this;
+		return;
+	}
+	
+	if (NULL == pMain->m_pTipDlg2) {
+		pMain->m_pTipDlg2 = new CRank(GamerID, Score);
+		pMain->m_pTipDlg2->Create(Rank, pMain);
+	}
+
+	pMain->m_pTipDlg2->ShowWindow(SW_SHOW);
+	
 	delete this;
 }
 

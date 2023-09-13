@@ -10,6 +10,7 @@ class CRank : public CDialogEx
 
 public:
 	CRank(CWnd* pParent = nullptr);   // 标准构造函数
+	CRank(CString id,int score,CWnd* pParent = nullptr);
 	virtual ~CRank();
 
 // 对话框数据
@@ -23,7 +24,15 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CListCtrl m_programLangList;
+	int m_rows;
+	int RowToId[20];
+	void ReadAllItem(CString sExcelFile);
 	CString GetModuleDir();
 	void ListToExcel(CListCtrl* datalist, CString filepath, CString str[], int rowcount, int colcount);
+	virtual BOOL OnInitDialog();
+	CListCtrl m_programLangList;
+	CString NewID;
+	int NewScore;
+	afx_msg void OnClose();
+	bool FromParent;
 };

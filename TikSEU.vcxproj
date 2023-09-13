@@ -192,6 +192,7 @@
     <ClInclude Include="CRange.h" />
     <ClInclude Include="CRanges.h" />
     <ClInclude Include="CRank.h" />
+    <ClInclude Include="CSaveDlg.h" />
     <ClInclude Include="CSheets.h" />
     <ClInclude Include="CWorkbook.h" />
     <ClInclude Include="CWorkbooks.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="CNAME.cpp" />
     <ClCompile Include="COwerButton.cpp" />
     <ClCompile Include="CRank.cpp" />
+    <ClCompile Include="CSaveDlg.cpp" />
     <ClCompile Include="DIALOG1.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
