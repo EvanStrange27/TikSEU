@@ -149,7 +149,7 @@ void CRank::ReadAllItem(CString sExcelFile) // 读取Excel文本
 		CString Ranking;
 		if (FromParent) {
 			if (ifBigFish) {
-				int OldScore = atoi((char*)strListData[2].GetString());
+				int OldScore = _ttoi(strListData[2]);
 				Ranking.Format(L"%d", i - 1);
 				if (NewScore >= OldScore) {
 					CString NewScoreStr;
@@ -159,9 +159,11 @@ void CRank::ReadAllItem(CString sExcelFile) // 读取Excel文本
 					m_programLangList.SetItemText(i - 2, 2, NewScoreStr);
 					ifBigFish = 0;
 				}
-				m_programLangList.InsertItem(i - 2, Ranking);
-				m_programLangList.SetItemText(i - 2, 1, strListData[1]);
-				m_programLangList.SetItemText(i - 2, 2, strListData[2]);
+				else {
+					m_programLangList.InsertItem(i - 2, Ranking);
+					m_programLangList.SetItemText(i - 2, 1, strListData[1]);
+					m_programLangList.SetItemText(i - 2, 2, strListData[2]);
+				}
 			}
 			if (!ifBigFish) {
 				Ranking.Format(L"%d", i);
@@ -182,8 +184,8 @@ void CRank::ReadAllItem(CString sExcelFile) // 读取Excel文本
 		CString Ranking;
 		NewScoreStr.Format(L"%d", NewScore);
 		Ranking.Format(L"%d", rows);
-		m_programLangList.InsertItem(rows -1, Ranking);
-		m_programLangList.SetItemText(rows -1, 1, NewID);
+		m_programLangList.InsertItem(rows-1, Ranking);
+		m_programLangList.SetItemText(rows-1, 1, NewID);
 		m_programLangList.SetItemText(rows-1, 2, NewScoreStr);
 	}
 

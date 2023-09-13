@@ -54,6 +54,8 @@ BOOL CSaveDlg::OnInitDialog()
 void CSaveDlg::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
 	parent->GamerID = SaveName;
+	UpdateData(FALSE);
 	CDialogEx::OnOK();
 }
