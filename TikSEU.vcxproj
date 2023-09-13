@@ -185,10 +185,18 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CApplication.h" />
     <ClInclude Include="CGame.h" />
     <ClInclude Include="CNAME.h" />
     <ClInclude Include="COwerButton.h" />
+    <ClInclude Include="CRange.h" />
+    <ClInclude Include="CRanges.h" />
     <ClInclude Include="CRank.h" />
+    <ClInclude Include="CSheets.h" />
+    <ClInclude Include="CWorkbook.h" />
+    <ClInclude Include="CWorkbooks.h" />
+    <ClInclude Include="CWorksheet.h" />
+    <ClInclude Include="CWorksheets.h" />
     <ClInclude Include="DIALOG1.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />

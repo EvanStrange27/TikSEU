@@ -21,4 +21,9 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+	CListCtrl m_programLangList;
+	CString GetModuleDir();
+	void ListToExcel(CListCtrl* datalist, CString filepath, CString str[], int rowcount, int colcount);
 };
