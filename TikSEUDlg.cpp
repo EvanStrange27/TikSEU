@@ -31,6 +31,8 @@ public:
 // 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnStnClickedScrollbar1();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -43,6 +45,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_STN_CLICKED(IDC_SCROLLBAR1, &CAboutDlg::OnStnClickedScrollbar1)
 END_MESSAGE_MAP()
 
 
@@ -238,4 +241,10 @@ void CTikSEUDlg::ShowImg(CString path, INT control_id)
 	CDC* pDc = pCwnd->GetDC();//获取picture控件句柄 
 	img.Draw(pDc->m_hDC, 0, 0, rect.right - rect.left, rect.bottom - rect.top);//将图片画到picture控件所表示的范围，并且适应控件大小
 	ReleaseDC(pDc);//释放pDc
+}
+
+
+void CAboutDlg::OnStnClickedScrollbar1()
+{
+	// TODO: 在此添加控件通知处理程序代码
 }
