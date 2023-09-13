@@ -12,13 +12,14 @@
 #define IDB_BITMAP1                     134
 #define IDD_DIALOG2                     137
 #define IDD_NAME                        137
+#define IDD_DIALOG3                     141
+#define Rank                            141
 #define IDC_SCROLLBAR1                  1002
 #define IDC_HORI_SCROLLBAR              1002
 #define IDC_EDIT1                       1003
 #define IDC_HSCROLL_EDIT                1003
 #define Main_Play                       1004
 #define Main_Ranking                    1005
-#define IDC_BUTTON4                     1005
 #define Main_Quit                       1006
 #define IDC_MFCCOLORBUTTON1             1007
 #define IDC_STATIC1                     1008
@@ -121,7 +122,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        141
+#define _APS_NEXT_RESOURCE_VALUE        143
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1022
 #define _APS_NEXT_SYMED_VALUE           101

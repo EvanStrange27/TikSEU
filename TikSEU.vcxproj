@@ -188,6 +188,7 @@
     <ClInclude Include="CGame.h" />
     <ClInclude Include="CNAME.h" />
     <ClInclude Include="COwerButton.h" />
+    <ClInclude Include="CRank.h" />
     <ClInclude Include="DIALOG1.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="CGame.cpp" />
     <ClCompile Include="CNAME.cpp" />
     <ClCompile Include="COwerButton.cpp" />
+    <ClCompile Include="CRank.cpp" />
     <ClCompile Include="DIALOG1.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
